@@ -11,7 +11,8 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ResponseMessage {
+public class MessageException {
 
+    private LocalDateTime instant;
     private String message;
 }

@@ -1,5 +1,6 @@
 package com.projects.dscatalog.controller;
 
+import com.projects.dscatalog.dto.requests.CategoryDTO;
 import com.projects.dscatalog.entities.Category;
 import com.projects.dscatalog.dto.responses.ResponseMessage;
 import com.projects.dscatalog.services.CategoryService;
@@ -18,7 +19,7 @@ public class CategoryController {
     CategoryService categoryService;
 
     @GetMapping
-    public ResponseEntity<List<Category>> findAll(){
+    public ResponseEntity<List<CategoryDTO>> findAll(){
         return categoryService.findAllCategory();
     }
 
