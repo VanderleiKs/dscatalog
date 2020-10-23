@@ -1,11 +1,10 @@
 package com.projects.dscatalog.controller;
 
-import com.projects.dscatalog.models.Category;
-import com.projects.dscatalog.models.messages.ResponseMessage;
+import com.projects.dscatalog.entities.Category;
+import com.projects.dscatalog.dto.responses.ResponseMessage;
 import com.projects.dscatalog.services.CategoryService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,8 +22,23 @@ public class CategoryController {
         return categoryService.findAllCategory();
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Category> findById(@PathVariable Long id){
+        return categoryService.findById(id);
+    }
+
     @PostMapping
     public ResponseEntity<ResponseMessage> saveNewCategory(@RequestBody Category category){
         return categoryService.saveNewCategory(category);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ResponseMessage> deleteById(@PathVariable Long id){
+        return categoryService.deleteById(id);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ResponseMessage> updateCategory(@PathVariable Long id, @RequestBody Category category){
+        return categoryService.updateCategory(id, category);
     }
 }

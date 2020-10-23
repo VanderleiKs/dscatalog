@@ -1,6 +1,6 @@
 package com.projects.dscatalog.exceptions;
 
-import com.projects.dscatalog.models.messages.ResponseMessage;
+import com.projects.dscatalog.dto.responses.ResponseMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;

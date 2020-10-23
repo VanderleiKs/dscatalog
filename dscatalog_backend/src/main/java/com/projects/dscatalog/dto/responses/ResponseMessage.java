@@ -1,4 +1,4 @@
-package com.projects.dscatalog.models.messages;
+package com.projects.dscatalog.dto.responses;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
