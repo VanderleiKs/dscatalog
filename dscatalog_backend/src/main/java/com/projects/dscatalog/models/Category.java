@@ -1,4 +1,4 @@
-package com.projects.dscatalog.entity;
+package com.projects.dscatalog.models;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
