@@ -1,0 +1,1 @@
+insert into category (name) values ('Books'), ('Info'), ('Notebook'), ('Electronics');
