@@ -11,6 +11,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,11 +31,9 @@ public class CategoryService {
 
     //Find all categories
     @Transactional(readOnly = true)
-    public ResponseEntity<List<CategoryDTO>> findAllCategory(){
-        List<Category> categories = categoryRepository.findAll();
-        return ResponseEntity.ok(categories.stream()
-                .map(categoryMapper::toCategoryDTO)
-                .collect(Collectors.toList()));
+    public ResponseEntity<Page<CategoryDTO>> findAllCategory(PageRequest pageRequest){
+        Page<Category> categories = categoryRepository.findAll(pageRequest);
+        return ResponseEntity.ok(categories.map(categoryMapper::toCategoryDTO));
     }
 
     //Find one Category
@@ -71,10 +71,9 @@ public class CategoryService {
 
     //Update Category
     public ResponseEntity<ResponseMessage> updateCategory(Long id, CategoryDTO categoryDTO){
-        verifyIfExistCategoryById(id);
-        Category categoryToSave = categoryMapper.toCategory(categoryDTO);
-        categoryToSave.setID(id);
-        categoryRepository.save(categoryToSave);
+        Category categoryDatabase = verifyIfExistCategoryById(id);
+        categoryDatabase.setName(categoryDTO.getName());
+        categoryRepository.save(categoryDatabase);
         return ResponseEntity.ok(responseMessage("Update with success!"));
     }
 

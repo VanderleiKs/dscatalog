@@ -6,6 +6,9 @@ import com.projects.dscatalog.dto.responses.ResponseMessage;
 import com.projects.dscatalog.services.CategoryService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,8 +22,14 @@ public class CategoryController {
     CategoryService categoryService;
 
     @GetMapping
-    public ResponseEntity<List<CategoryDTO>> findAll(){
-        return categoryService.findAllCategory();
+    public ResponseEntity<Page<CategoryDTO>> findAll(
+            @RequestParam(value = "page", defaultValue = "0") Integer page, //Pag
+            @RequestParam(value = "sizePerPage", defaultValue = "5") Integer sizePerPage, //item per pag
+            @RequestParam(value = "sort", defaultValue = "ASC") String sort, //Form ordem
+            @RequestParam(value = "orderBy", defaultValue = "name") String orderBy //Per column ordem
+    ){
+        PageRequest pageRequest = PageRequest.of(page, sizePerPage, Sort.Direction.valueOf(sort), orderBy);
+        return categoryService.findAllCategory(pageRequest);
     }
 
     @GetMapping("/{id}")

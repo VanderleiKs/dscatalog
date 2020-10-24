@@ -1,1 +1,4 @@
-insert into category (name) values ('Books'), ('Info'), ('Notebook'), ('Electronics');
+insert into category (name, create_at) values ('Books', now()), ('Info', now()), ('Notebook', now()), ('Electronics', now());
+insert into category (name, create_at) values ('Books', now()), ('Info', now()), ('Notebook', now()), ('Electronics', now());
+insert into category (name, create_at) values ('Books', now()), ('Info', now()), ('Notebook', now()), ('Electronics', now());
+insert into category (name, create_at) values ('Books', now()), ('Info', now()), ('Notebook', now()), ('Electronics', now());

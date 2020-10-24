@@ -1,9 +1,7 @@
 package com.projects.dscatalog.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.time.Instant;
 
 @Entity
 public class Category {
@@ -13,12 +11,11 @@ public class Category {
     private Long id;
     private String name;
 
-    public Category(){}
+    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+    private Instant updateAt;
+    private Instant createAt;
 
-    public Category(Long id, String name) {
-        this.id = id;
-        this.name = name;
-    }
+    public Category(){}
 
     public Long getId() {
         return id;
@@ -35,4 +32,24 @@ public class Category {
     public void setName(String name) {
         this.name = name;
     }
+
+    public Instant getUpdateAt() {
+        return updateAt;
+    }
+
+    public Instant getCreateAt() {
+        return createAt;
+    }
+
+    @PrePersist
+    public void preCreate(){
+        createAt = Instant.now();
+    }
+
+    @PreUpdate
+    public void preUpdate(){
+        updateAt = Instant.now();
+    }
+
+
 }
