@@ -9,6 +9,8 @@ import com.projects.dscatalog.mapper.CategoryMapper;
 import com.projects.dscatalog.repositories.CategoryRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,9 +38,9 @@ public class CategoryService {
 
     //Find one Category
     @Transactional(readOnly = true)
-    public ResponseEntity<Category> findById(Long id){
-      Category category = verifyIfExistCategoryById(id);
-      return ResponseEntity.ok(category);
+    public ResponseEntity<CategoryDTO> findById(Long id){
+      CategoryDTO categoryDTO = categoryMapper.toCategoryDTO(verifyIfExistCategoryById(id));
+      return ResponseEntity.ok(categoryDTO);
     }
 
     //Save new category
@@ -53,16 +55,26 @@ public class CategoryService {
     }
 
     //Delete Category
-    public ResponseEntity<ResponseMessage> deleteById(Long id){
-        verifyIfExistCategoryById(id);
-        categoryRepository.deleteById(id);
-        return ResponseEntity.ok(responseMessage("Category excluded with success!"));
+    public ResponseEntity<ResponseMessage> deleteById(Long id) {
+        try {
+            categoryRepository.deleteById(id);
+            return ResponseEntity.ok(responseMessage("Category excluded with success!"));
+        }
+        catch (EmptyResultDataAccessException ex){
+            throw new CatalogNotFoundException("Category not found");
+        }
+        catch (DataIntegrityViolationException ex){
+            throw new CatalogStandardException("Database Violation");
+        }
+
     }
 
     //Update Category
-    public ResponseEntity<ResponseMessage> updateCategory(Long id, Category category){
+    public ResponseEntity<ResponseMessage> updateCategory(Long id, CategoryDTO categoryDTO){
         verifyIfExistCategoryById(id);
-        categoryRepository.save(category);
+        Category categoryToSave = categoryMapper.toCategory(categoryDTO);
+        categoryToSave.setID(id);
+        categoryRepository.save(categoryToSave);
         return ResponseEntity.ok(responseMessage("Update with success!"));
     }
 

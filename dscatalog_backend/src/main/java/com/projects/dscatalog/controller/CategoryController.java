@@ -24,7 +24,7 @@ public class CategoryController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Category> findById(@PathVariable Long id){
+    public ResponseEntity<CategoryDTO> findById(@PathVariable Long id){
         return categoryService.findById(id);
     }
 
@@ -39,7 +39,7 @@ public class CategoryController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ResponseMessage> updateCategory(@PathVariable Long id, @RequestBody Category category){
-        return categoryService.updateCategory(id, category);
+    public ResponseEntity<ResponseMessage> updateCategory(@PathVariable Long id, @RequestBody CategoryDTO categoryDTO){
+        return categoryService.updateCategory(id, categoryDTO);
     }
 }

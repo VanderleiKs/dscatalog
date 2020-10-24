@@ -24,6 +24,10 @@ public class Category {
         return id;
     }
 
+    public void setID(Long id) {
+        this.id = id;
+    }
+
     public String getName() {
         return name;
     }
