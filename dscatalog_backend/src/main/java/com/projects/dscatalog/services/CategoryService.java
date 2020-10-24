@@ -9,11 +9,12 @@ import com.projects.dscatalog.mapper.CategoryMapper;
 import com.projects.dscatalog.repositories.CategoryRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,6 +35,7 @@ public class CategoryService {
     }
 
     //Find one Category
+    @Transactional(readOnly = true)
     public ResponseEntity<Category> findById(Long id){
       Category category = verifyIfExistCategoryById(id);
       return ResponseEntity.ok(category);
@@ -44,9 +46,10 @@ public class CategoryService {
        if(categoryRepository.findByName(category.getName()) != null){
            throw new CatalogStandardException("Category already registered");
        }
-       categoryRepository.save(category);
-       ResponseMessage response = responseMessage("Category save with success!");
-       return new ResponseEntity<>(response, HttpStatus.CREATED);
+       CategoryDTO categoryDTO = categoryMapper.toCategoryDTO(categoryRepository.save(category));
+       URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+               .buildAndExpand(categoryDTO.getId()).toUri();
+       return ResponseEntity.created(uri).body(responseMessage("Category save with success!"));
     }
 
     //Delete Category
