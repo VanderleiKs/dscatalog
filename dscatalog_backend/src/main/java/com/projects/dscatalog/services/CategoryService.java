@@ -1,14 +1,11 @@
 package com.projects.dscatalog.services;
 
 import com.projects.dscatalog.dto.requests.CategoryDTO;
+import com.projects.dscatalog.dto.responses.ResponseMessage;
+import com.projects.dscatalog.entities.Category;
 import com.projects.dscatalog.exceptions.CatalogNotFoundException;
 import com.projects.dscatalog.exceptions.CatalogStandardException;
-import com.projects.dscatalog.entities.Category;
-import com.projects.dscatalog.dto.responses.ResponseMessage;
-import com.projects.dscatalog.mapper.CategoryMapper;
 import com.projects.dscatalog.repositories.CategoryRepository;
-import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
@@ -19,38 +16,37 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
-@AllArgsConstructor(onConstructor = @__(@Autowired))
 public class CategoryService {
 
-   private final CategoryRepository categoryRepository;
-   private final CategoryMapper categoryMapper = CategoryMapper.INSTANCE;
+    private final CategoryRepository categoryRepository;
+    public CategoryService(CategoryRepository categoryRepository) {
+        this.categoryRepository = categoryRepository;
+    }
 
     //Find all categories
     @Transactional(readOnly = true)
     public ResponseEntity<Page<CategoryDTO>> findAllCategory(PageRequest pageRequest){
         Page<Category> categories = categoryRepository.findAll(pageRequest);
-        return ResponseEntity.ok(categories.map(categoryMapper::toCategoryDTO));
+        return ResponseEntity.ok(categories.map(CategoryDTO::new));
     }
 
     //Find one Category
     @Transactional(readOnly = true)
     public ResponseEntity<CategoryDTO> findById(Long id){
-      CategoryDTO categoryDTO = categoryMapper.toCategoryDTO(verifyIfExistCategoryById(id));
+      CategoryDTO categoryDTO = new CategoryDTO(verifyIfExistCategoryById(id));
       return ResponseEntity.ok(categoryDTO);
     }
 
     //Save new category
-    public ResponseEntity<ResponseMessage> saveNewCategory(Category category){
-       if(categoryRepository.findByName(category.getName()) != null){
+    public ResponseEntity<ResponseMessage> saveNewCategory(CategoryDTO categoryDTO){
+       if(categoryRepository.findByName(categoryDTO.getName()) != null){
            throw new CatalogStandardException("Category already registered");
        }
-       CategoryDTO categoryDTO = categoryMapper.toCategoryDTO(categoryRepository.save(category));
+       Category category = categoryRepository.save(new Category(categoryDTO));
        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-               .buildAndExpand(categoryDTO.getId()).toUri();
+               .buildAndExpand(category.getId()).toUri();
        return ResponseEntity.created(uri).body(responseMessage("Category save with success!"));
     }
 
@@ -66,7 +62,6 @@ public class CategoryService {
         catch (DataIntegrityViolationException ex){
             throw new CatalogStandardException("Database Violation");
         }
-
     }
 
     //Update Category

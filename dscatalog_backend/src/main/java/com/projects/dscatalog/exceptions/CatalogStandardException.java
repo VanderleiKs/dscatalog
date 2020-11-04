@@ -1,10 +1,10 @@
 package com.projects.dscatalog.exceptions;
 
-import org.springframework.http.HttpStatus;
 
 public class CatalogStandardException extends RuntimeException{
+    private static final long serialVersionUID = 1L;
 
-    public CatalogStandardException(String msg){
+    public CatalogStandardException(String msg) {
         super(msg);
     }
 }
