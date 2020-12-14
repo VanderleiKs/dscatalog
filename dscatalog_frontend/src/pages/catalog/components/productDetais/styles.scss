@@ -1,0 +1,87 @@
+.product-detais-card {
+    margin: 20px 40px 20px 40px ;
+    border-radius: 20px;
+    padding: 35px 50px 35px 50px;
+}
+
+.product-detais-container {
+    display: flex;
+    margin-top: 20px;
+}
+
+.product-detais-card .product-price {
+    font-size: 48px;
+}
+
+.container-link-golback {
+    text-align: center;
+}
+
+.text-golback {
+font-size: 20px;
+letter-spacing: -0.015em;
+color: #263238;
+text-transform: uppercase;
+&:hover {
+    color: #407bff;
+}
+}
+
+.seta-golback {
+    color: #407BFF;
+    transform: rotate(-180deg);
+    margin-right: 20px;
+}
+
+.container-image {
+    padding: 0;
+}
+
+.product-image-card {
+    border: 1px solid #E1E1E1;
+    box-sizing: border-box;
+    border-radius: 20px;
+    padding: 7px 50px 7px 50px;
+    margin-bottom: 25px;
+    height: 370px;
+    text-align: center;
+}
+
+.product-image {
+    width: 70%;
+}
+
+.product-detais-name {
+    font-size: 30px;
+    line-height: 42px;
+    letter-spacing: -0.015em;
+    color: #263238;
+    margin-bottom: 5px;
+}
+
+.container-detais-text {
+    padding: 0;
+}
+
+.product-descrition-card {
+    border: 1px solid #E1E1E1;
+    box-sizing: border-box;
+    border-radius: 20px;
+    padding: 20px;
+    height: 500px;
+}
+
+.product-detais-text-title {
+    font-size: 24px;
+    line-height: 33px;
+    letter-spacing: -0.015em;
+    color: #9E9E9E;
+    margin-bottom: 25px;
+}
+
+.product-detais-text {
+    font-size: 18px;
+    line-height: 25px;
+    letter-spacing: -0.015em;
+    color: #9E9E9E;
+}

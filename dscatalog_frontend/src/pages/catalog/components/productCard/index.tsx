@@ -1,18 +1,20 @@
 import React from 'react';
 import './styles.scss';
 import {ReactComponent as ProductImage} from '../../../../core/assets/images/product.svg';
+import ProductPrice from '../../../../core/components/productPrice';
 
-const ProductCard = () => (
+type Props = {
+    name? : string;
+}
+
+const ProductCard = ({name}: Props) => (
 
     <div className="catalog-products card-base">
         <ProductImage/>
         <div className="product-name">
-            <span>Computador Desktop - Intel Core i7</span>
+<span>{name}Computador Desktop - Intel Core i7</span>
         </div>
-        <div className="container-product-price">
-            <span className="currency-price">R$</span>
-            <p className="product-price">2.779,00</p>
-        </div>
+        <ProductPrice price="2.799,00"/>
     </div>
 );
 

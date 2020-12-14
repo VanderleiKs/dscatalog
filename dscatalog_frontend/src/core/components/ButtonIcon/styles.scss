@@ -1,5 +1,10 @@
+.button-container {
+    display: flex;
+}
+
+
 .button-icon {
-    width: 360px;
+    width: 340px;
     height: 60px;
     font-size: 18px;
     font-weight: 600;
@@ -9,8 +14,10 @@
 
 .seta-icon {
     background: #33569b;
+    color: white;
     border-radius: 0 10px 10px 0;
     margin-left: 0;
+    height: 60px;
     width: 60px;
     align-items: center;
     display: flex;
