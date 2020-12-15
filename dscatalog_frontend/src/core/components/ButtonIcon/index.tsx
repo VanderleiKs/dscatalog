@@ -1,5 +1,5 @@
 import React from 'react';
-import { ReactComponent as Seta } from '../../assets/images/seta.svg';
+import { ReactComponent as Seta } from 'core/assets/images/seta.svg';
 import './styles.scss';
 
 type Props = {
