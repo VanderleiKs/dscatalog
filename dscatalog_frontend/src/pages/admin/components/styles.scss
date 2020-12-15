@@ -1,0 +1,28 @@
+.container-admin-navbar {
+    width: 300px;
+    background-color: #fff;
+    height: calc(100vh - 70px);
+
+}
+
+.admin-navbar-item {
+    display: block;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    padding-left: 40px;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 25px;
+    letter-spacing: -0.015em;
+    border-bottom: 1px solid #E1E1E1;
+    color: #9e9e9e;
+    &:hover {
+        color: #407BFF;
+    }
+}
+
+.active {
+    background: rgba(64, 123, 255, 0.3);
+    color: #407BFF;
+}

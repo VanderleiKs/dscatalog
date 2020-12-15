@@ -3,7 +3,7 @@ import ContentLoader from "react-content-loader"
 import { GenerateList } from "core/utils/List";
 
 export const ProductLoader = () => {
-    const itens = GenerateList(7);
+    const itens = GenerateList(3);
 
     return (
         <>
