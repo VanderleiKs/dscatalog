@@ -52,6 +52,11 @@ public class ProductService {
         return ResponseEntity.ok(responseMessage("Update with success!"));
     }
 
+    public ResponseEntity<ResponseMessage> deleteProduct(long id){
+        productRepository.deleteById(id);
+        return ResponseEntity.ok().body(responseMessage("Deleted with Success!"));
+    }
+
     //Converte for product
     private Product dtoToProduct(ProductDTO productDTO, Product product) {
         product.setName(productDTO.getName());

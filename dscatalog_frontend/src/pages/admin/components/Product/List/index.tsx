@@ -32,7 +32,7 @@ const List = () => {
             <button className="btn btn-primary btn-lg" onClick={handleCreate}>adicionar</button>
             <div className="container-cards mt-5 d-grid">
                 {productResponse?.content.map(product => (
-                    <Card key={product.id} product={product}/>
+                    <Card key={product.id} product={product} id={product.id}/>
                 ))}
             </div>
             {productResponse && 
