@@ -60,7 +60,7 @@ public class UserService {
     public String deleteUser(Long id){
         userRepository.findById(id).orElseThrow(() -> new CatalogNotFoundException("Id not found!"));
         userRepository.deleteById(id);
-        return id + " excluded with success!";
+        return "Id " + id + " excluded with success!";
     }
 
     private User userDtoToUser(UserDTO userDTO, User user) {
