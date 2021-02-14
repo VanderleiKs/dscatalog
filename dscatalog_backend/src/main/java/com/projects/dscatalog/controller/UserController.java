@@ -2,6 +2,8 @@ package com.projects.dscatalog.controller;
 
 import java.net.URI;
 
+import javax.validation.Valid;
+
 import com.projects.dscatalog.dto.requests.UserDTO;
 import com.projects.dscatalog.dto.requests.UserInsertDTO;
 import com.projects.dscatalog.services.UserService;
@@ -46,7 +48,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserDTO> saveNewUser(@RequestBody UserInsertDTO userDTO){
+    public ResponseEntity<UserDTO> saveNewUser(@Valid @RequestBody UserInsertDTO userDTO){
         UserDTO newUserDTO = userService.saveNewUser(userDTO);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
         .buildAndExpand(newUserDTO.getId()).toUri();
@@ -54,7 +56,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateUser(@PathVariable Long id, @RequestBody UserDTO userDTO){
+    public ResponseEntity<String> updateUser(@PathVariable Long id, @Valid @RequestBody UserDTO userDTO){
         return ResponseEntity.ok().body(userService.updateUser(userDTO, id));
     }
 

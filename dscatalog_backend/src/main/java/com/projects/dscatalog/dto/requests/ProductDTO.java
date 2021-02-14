@@ -6,11 +6,17 @@ import com.projects.dscatalog.entities.Product;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Positive;
+
 public class ProductDTO {
 
     private Long id;
+    @NotBlank(message = "Campo obrigatório")
     private String name;
+    @Positive(message = "Preço inválido")
     private Double price;
+    @NotBlank(message = "Campo obrigatório")
     private String description;
     private String imgUrl;
     private final Set<CategoryDTO> categories = new HashSet<>();

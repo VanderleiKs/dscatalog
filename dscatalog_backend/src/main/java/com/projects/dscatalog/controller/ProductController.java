@@ -1,5 +1,7 @@
 package com.projects.dscatalog.controller;
 
+import javax.validation.Valid;
+
 import com.projects.dscatalog.dto.requests.ProductDTO;
 import com.projects.dscatalog.dto.responses.ResponseMessage;
 import com.projects.dscatalog.services.ProductService;
@@ -33,12 +35,12 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<ResponseMessage> saveProduct(@RequestBody ProductDTO productDTO){
+    public ResponseEntity<ResponseMessage> saveProduct(@Valid @RequestBody ProductDTO productDTO){
         return productService.saveProduct(productDTO);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ResponseMessage> updateProduct(@PathVariable Long id, @RequestBody ProductDTO productDTO){
+    public ResponseEntity<ResponseMessage> updateProduct(@PathVariable Long id, @Valid @RequestBody ProductDTO productDTO){
         return productService.updateProduct(id, productDTO);
     }
 
