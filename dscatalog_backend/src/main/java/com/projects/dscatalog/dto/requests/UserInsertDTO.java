@@ -1,8 +1,14 @@
 package com.projects.dscatalog.dto.requests;
 
+import javax.validation.constraints.NotBlank;
+
+import com.projects.dscatalog.exceptions.UserInsertValid;
+
+@UserInsertValid
 public class UserInsertDTO extends UserDTO{
     private static final long serialVersionUID = 1L;
 
+    @NotBlank(message = "Senha deve ser preenchida")
     private String password;
 
     public UserInsertDTO(){
