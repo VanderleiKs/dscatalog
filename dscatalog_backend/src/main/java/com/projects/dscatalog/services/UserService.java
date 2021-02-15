@@ -4,6 +4,7 @@ import javax.xml.catalog.CatalogException;
 
 import com.projects.dscatalog.dto.requests.UserDTO;
 import com.projects.dscatalog.dto.requests.UserInsertDTO;
+import com.projects.dscatalog.dto.requests.UserUpdateDTO;
 import com.projects.dscatalog.entities.User;
 import com.projects.dscatalog.exceptions.CatalogNotFoundException;
 import com.projects.dscatalog.repositories.RoleRepository;
@@ -49,7 +50,7 @@ public class UserService {
         return newUserDTO;
     }
 
-    public String updateUser(UserDTO userDTO, Long id){
+    public String updateUser(UserUpdateDTO userDTO, Long id){
         User user = new User();
         user = userRepository.getOne(id);
         userDtoToUser(userDTO, user);

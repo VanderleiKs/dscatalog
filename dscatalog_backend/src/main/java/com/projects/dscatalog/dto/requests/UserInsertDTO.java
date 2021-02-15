@@ -2,7 +2,7 @@ package com.projects.dscatalog.dto.requests;
 
 import javax.validation.constraints.NotBlank;
 
-import com.projects.dscatalog.exceptions.UserInsertValid;
+import com.projects.dscatalog.exceptions.validation.UserInsertValid;
 
 @UserInsertValid
 public class UserInsertDTO extends UserDTO{

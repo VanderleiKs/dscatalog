@@ -1,4 +1,4 @@
-package com.projects.dscatalog.exceptions;
+package com.projects.dscatalog.exceptions.validation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,6 +7,7 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import com.projects.dscatalog.dto.requests.UserInsertDTO;
 import com.projects.dscatalog.entities.User;
+import com.projects.dscatalog.exceptions.FieldError;
 import com.projects.dscatalog.repositories.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
