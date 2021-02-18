@@ -2,6 +2,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch DscatalogApplication",
+            "request": "launch",
+            "mainClass": "DscatalogApplication",
+            "projectName": "descatalog"
+        },
+        {
+            "type": "java",
             "name": "Spring Boot-DscatalogApplication<descatalog>",
             "request": "launch",
             "cwd": "${workspaceFolder}",
