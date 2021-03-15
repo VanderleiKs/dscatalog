@@ -1,3 +1,4 @@
+import { findSessionData } from 'core/utils/Auth';
 import { makeRequest } from 'core/utils/Request';
 import React, { useState } from 'react';
 import FormBase from '../FormBase';
@@ -34,8 +35,6 @@ const Form = () => {
             ...formData,
             categories: [{id: formData.categories}]
         }
-        console.log(payLoad);
-
         makeRequest({ method: "POST", url: "/products", data: payLoad })
         .then(() => setFormData({name: '', price: '', description: '', categories: '' }));
     }
