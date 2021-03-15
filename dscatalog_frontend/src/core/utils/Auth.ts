@@ -1,4 +1,3 @@
-import { stringify } from "qs";
 
 export const CLIENT_ID = "dscatalog";
 export const CLIENT_SECRET = "dscatalog123";
@@ -16,6 +15,6 @@ export const saveSessionData = (dataLogin: DataLogin) => {
     localStorage.setItem('AuthData', JSON.stringify(dataLogin));
 }
 
-export const findSessionData = () => {
-   return localStorage.getItem('AuthData');
+export const getSessionData = () => {
+   return JSON.parse(localStorage.getItem('AuthData') ?? '{}') as DataLogin;
 }
