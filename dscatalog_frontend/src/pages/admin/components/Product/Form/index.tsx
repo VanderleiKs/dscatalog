@@ -66,6 +66,7 @@ const Form = () => {
                             name="categories"
                             onChange={handleOnChange}
                         >
+                            <option value="">Selecione...</option>
                             <option value="2">Computadores</option>
                             <option value="3">Eletrônicos</option>
                             <option value="1">Livros</option>
