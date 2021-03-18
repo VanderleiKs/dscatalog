@@ -1,7 +1,7 @@
 import ButtonIcon from 'core/components/ButtonIcon';
 import { saveSessionData } from 'core/utils/Auth';
 import { makeLogin } from 'core/utils/Request';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 import AuthCard from '../Card';
@@ -42,7 +42,7 @@ const Login = () => {
                     Usuário ou senha inválidos!
                 </div>
             )}
-            <form className="form-loginAdmin" onSubmit={handleSubmit(onSubmit)}>
+            <form className={hasError ? "mt-3" : "form-loginAdmin"} onSubmit={handleSubmit(onSubmit)}>
                 <div className="margin-botton-25">
                     <input type="email"
                         placeholder="Email"

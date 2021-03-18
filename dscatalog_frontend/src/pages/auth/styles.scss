@@ -1,6 +1,9 @@
 .auth-container{
     display: flex;
     padding: 35px 35px 60px 150px;
+    background: url(~core/assets/images/backgroundLogin.svg) no-repeat;
+    background-size: 100%;
+    height: calc(100vh - 70px);
 
 }
 

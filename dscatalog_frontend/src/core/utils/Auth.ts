@@ -25,28 +25,21 @@ export const saveSessionData = (dataLogin: DataLogin) => {
 }
 
 export const getSessionData = () => {
-    const token = localStorage.getItem('AuthData');
-    if (token != null) {
-        return JSON.parse(token) as DataLogin;
-    }
-    return null;
+    return JSON.parse(localStorage.getItem('AuthData') || '{}') as DataLogin;
 }
 
 export const getAccessTokenDecoded = () => {
-    const sessionData = getSessionData();
-    if (sessionData != null) {
-        var decoded = jwtDecode(sessionData?.access_token) as AccessToken;
-        return decoded;
+    try {
+        const sessionData = getSessionData();
+        return jwtDecode(sessionData?.access_token) as AccessToken;
+    } catch (error) {
+        return {} as AccessToken;
     }
-    return null;
 }
 
 const checkTokenIsValid = () => {
-    if (getAccessTokenDecoded() != null) {
-        const { exp } = getAccessTokenDecoded()!;
+        const { exp } = getAccessTokenDecoded();
         return Date.now() <= exp * 1000;
-    }
-    return false;
 }
 
 export const isAuthenticated = () => {
@@ -56,6 +49,5 @@ export const isAuthenticated = () => {
 
 export const isAlowedByRole = (roles: Role[] = []) => {
     const userRoles = getAccessTokenDecoded();
-
-    return roles.some(role => userRoles?.authorities.includes(role));
+    return roles.some(role => userRoles.authorities?.includes(role));
 }
