@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './style.scss';
 import { Link, NavLink } from 'react-router-dom';
+import { getSessionData, isAuthenticated } from 'core/utils/Auth';
 
 
-const Navbar = () => (
+const Navbar = () => {
+  
+    return (
     <nav className="row bg-primary nav-header">
         <div className="col-2 header-ds">
             <Link to="/" ><h4>Ds Catalog</h4></Link>
@@ -18,13 +21,14 @@ const Navbar = () => (
                 </li>
                 <li>
                     <NavLink to="/admin" activeClassName="active">ADMIN</NavLink>
-                </li>
+                </li>                
             </ul>
+            
         </div>
 
     </nav>
 
-);
+)};
 
 export default Navbar;
 

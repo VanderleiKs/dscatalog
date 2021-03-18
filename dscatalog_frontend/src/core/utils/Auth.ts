@@ -55,6 +55,7 @@ export const isAuthenticated = () => {
 }
 
 export const isAlowedByRole = (roles: Role[] = []) => {
-    const { authorities } = getAccessTokenDecoded()!;
-    return roles.some(role => authorities.includes(role));
+    const userRoles = getAccessTokenDecoded();
+
+    return roles.some(role => userRoles?.authorities.includes(role));
 }
