@@ -1,6 +1,7 @@
-import { makePrivateRequest, makeRequest } from 'core/utils/Request';
+import { makePrivateRequest } from 'core/utils/Request';
 import React, { useState } from 'react';
 import FormBase from '../FormBase';
+import history from 'core/utils/history';
 
 type typeForm = React.ChangeEvent<HTMLInputElement |
     HTMLTextAreaElement |
@@ -35,7 +36,8 @@ const Form = () => {
             categories: [{id: formData.categories}]
         }
         makePrivateRequest({method: "POST", url: "/products", data: payLoad})
-        .then(() => setFormData({name: '', price: '', description: '', categories: '' }));
+        ?.then(() => alert("Product save with sucess!"))
+        .finally(() => history.goBack());
     }
 
 

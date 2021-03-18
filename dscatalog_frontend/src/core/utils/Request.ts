@@ -1,6 +1,7 @@
 import Axios, { Method } from "axios";
 import qs from "qs";
-import { CLIENT_ID, CLIENT_SECRET, getSessionData } from "./Auth";
+import { Redirect } from "react-router";
+import { CLIENT_ID, CLIENT_SECRET, getSessionData, isAuthenticated } from "./Auth";
 import history from './history';
 
 type RequestParams = {
@@ -18,16 +19,16 @@ type LoginData = {
 
 const baseUrl = 'http://localhost:8080';
 
-Axios.interceptors.response.use(function(response){
+Axios.interceptors.response.use(function (response) {
     return response;
-}, function(error){
-    if(error.response.status === 401){
+}, function (error) {
+    if (error.response.status === 401) {
         history.push("/admin/auth/login");
     }
     return Promise.reject(error);
 });
 
-export const makeRequest = ({method = 'GET', url, data, params, headers}: RequestParams) => {
+export const makeRequest = ({ method = 'GET', url, data, params, headers }: RequestParams) => {
     return Axios({
         method,
         url: `${baseUrl}${url}`,
@@ -37,26 +38,27 @@ export const makeRequest = ({method = 'GET', url, data, params, headers}: Reques
     });
 }
 
-export const makePrivateRequest = ({method = 'GET', url, data, params}: RequestParams) => {
-    const sessionData = getSessionData();
-
-    const headers = {
-        'Authorization': `Bearer ${sessionData.access_token}`
+export const makePrivateRequest = ({ method = 'GET', url, data, params }: RequestParams) => {
+    if (isAuthenticated()) {
+        const sessionData = getSessionData();
+        const headers = {
+            'Authorization': `Bearer ${sessionData?.access_token}`
+        }
+        return makeRequest({ method, url, data, params, headers });
     }
-    
-    return makeRequest({method, url, data, params, headers});
+    history.push("/admin/auth/login");
 }
 
 
 export const makeLogin = (loginData: LoginData) => {
     const token = window.btoa(`${CLIENT_ID}:${CLIENT_SECRET}`);
-    
+
     const headers = {
         Authorization: `Basic ${token}`,
         'Content-Type': 'application/x-www-form-urlencoded'
     }
 
-    const payload = qs.stringify({...loginData, grant_type: 'password'});
+    const payload = qs.stringify({ ...loginData, grant_type: 'password' });
 
     return makeRequest({
         method: "POST",
