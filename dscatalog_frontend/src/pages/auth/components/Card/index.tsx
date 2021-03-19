@@ -1,13 +1,12 @@
 import React from 'react';
-import Login from '../Login';
 import './styles.scss';
 
-type Prop = {
+type Props = {
     title: string;
     children: React.ReactNode;
 }
 
-const AuthCard = ({title, children}: Prop) => {
+const AuthCard = ({title, children}: Props) => {
 
     return (
         <div className="container-authcard">

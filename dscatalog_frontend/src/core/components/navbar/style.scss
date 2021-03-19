@@ -3,6 +3,7 @@
     align-items: center;
     height: 70px;
     padding-left: 40px;
+    padding-right: 40px;
     margin-left: 0%;
     margin-right: 0%;
 
@@ -10,25 +11,56 @@
 
 .header-menu {
     display: flex;
-    font-size: 16px;
-    width: 380px;
-    justify-content: space-between;
-    a {
-        font-style: normal;
-        color: rgba($color: #fff, $alpha: 0.5);
-        &:hover{
-            color:#fff;  
-        }
-        &.active {
-            color: #fff;
-            font-weight: 700;
-        }
-    }
+    justify-content: center;
 
+    li:nth-child(2) {
+        margin-left: 85px;
+        margin-right: 85px;
+    }
+}
+
+.nav-link {
+    font-size: 16px;
+    font-style: normal;
+    text-transform: uppercase;
+    color: rgba($color: #fff, $alpha: 0.5);
+    &:hover{
+        color:#fff;  
+    }
+    &.active {
+        color: #fff;
+        font-weight: 700;
+    }
 }
 
 .header-ds {
     a {
         color: #fff;
     }
+}
+
+.link-logout {
+    font-size: 15px;
+    font-style: normal;
+    text-transform: uppercase;
+    color: #fceded;
+    font-weight: 800;
+    background-color: rgb(240, 95, 95);
+    border: none;
+    padding: 0px 5px 0 5px;
+    border-radius: 8px;
+
+    &:hover{
+        color: rgb(255, 255, 255);
+    }
+
+    &:focus{
+       outline: none;
+    }
+}
+
+.nav-admin {
+    display: flex;
+    justify-content: flex-end;
+    font-size: 13px;
 }

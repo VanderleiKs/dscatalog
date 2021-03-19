@@ -18,14 +18,14 @@ const Auth = () => (
             <div className="formulario-content">
                 
                 <Switch>
-                    <Redirect from="/admin/auth" to="/admin/auth/login" exact /> 
-                    <Route path="/admin/auth/login">
+                    <Redirect from="/auth" to="/auth/login" exact /> 
+                    <Route path="/auth/login">
                     <Login />
                     </Route>
-                    <Route path="/admin/auth/register">
+                    <Route path="/auth/register">
                     <Register />
                     </Route>
-                    <Route path="/admin/auth/recover">
+                    <Route path="/auth/recover">
                     <Recover />
                     </Route>            
                 </Switch>

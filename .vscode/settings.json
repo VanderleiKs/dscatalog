@@ -1,3 +1,5 @@
 {
-    "java.configuration.updateBuildConfiguration": "automatic"
+    "java.configuration.updateBuildConfiguration": "automatic",
+    "js/ts.implicitProjectConfig.strictFunctionTypes": false,
+    "typescript.tsdk": "node_modules/typescript/lib"
 }

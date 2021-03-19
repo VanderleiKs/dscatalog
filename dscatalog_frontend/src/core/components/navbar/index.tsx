@@ -1,34 +1,67 @@
+import { getAccessTokenDecoded, logout } from 'core/utils/Auth';
 import React, { useEffect, useState } from 'react';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 import './style.scss';
-import { Link, NavLink } from 'react-router-dom';
-import { getSessionData, isAuthenticated } from 'core/utils/Auth';
-
 
 const Navbar = () => {
-  
+    const [userSession, setUserSession] = useState('');
+    const [userAuthorities, setUserAuthorities] = useState('');
+    const location = useLocation();
+
+    useEffect(() => {
+        setUserSession(getAccessTokenDecoded().user_name);
+        if (getAccessTokenDecoded().authorities?.some(role => role === 'ROLE_ADMIN')) {
+            setUserAuthorities('ADMIN');
+        }
+        else {
+            setUserAuthorities('OPERATOR');
+        }
+
+    }, [location]);
+
+    const onLogout = () => {
+        logout();
+    }
+
     return (
-    <nav className="row bg-primary nav-header">
-        <div className="col-2 header-ds">
-            <Link to="/" ><h4>Ds Catalog</h4></Link>
-        </div>
-        <div className="col-6 offset-2">
-            <ul className="header-menu">
-                <li>
-                    <NavLink activeClassName="active" to="/" exact>HOME</NavLink>
-                </li>
-                <li>
-                    <NavLink to="/products" activeClassName="active">CATÁLOGO</NavLink>
-                </li>
-                <li>
-                    <NavLink to="/admin" activeClassName="active">ADMIN</NavLink>
-                </li>                
-            </ul>
-            
-        </div>
+        <nav className="row bg-primary nav-header">
+            <div className="col-3 header-ds">
+                <Link to="/" ><h4>Ds Catalog</h4></Link>
+            </div>
+            <div className="col-6">
+                <ul className="header-menu">
+                    <li>
+                        <NavLink className="nav-link" activeClassName="active" to="/" exact>HOME</NavLink>
+                    </li>
+                    <li>
+                        <NavLink className="nav-link" to="/products" activeClassName="active">CATÁLOGO</NavLink>
+                    </li>
 
-    </nav>
+                    <li>
+                        {userSession && (
+                            <NavLink className="nav-link" to="/admin" activeClassName="active">ADMIN</NavLink>
+                        )}
+                    </li>
 
-)};
+                </ul>
+
+            </div>
+            <div className="col-3 nav-admin">
+                {userSession && (
+                    <>
+                        {`${userAuthorities} | ${userSession}`}&emsp;
+                        <button onClick={onLogout} className="link-logout">LOGOUT</button>
+                    </>
+                )}
+                {!userSession && (
+                    <Link to="/auth/login" className="nav-link active">Login</Link>
+                )}
+            </div>
+
+        </nav>
+
+    )
+};
 
 export default Navbar;
 

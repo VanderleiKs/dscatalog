@@ -1,7 +1,7 @@
 import Axios, { Method } from "axios";
 import qs from "qs";
 import { Redirect } from "react-router";
-import { CLIENT_ID, CLIENT_SECRET, getSessionData, isAuthenticated } from "./Auth";
+import { CLIENT_ID, CLIENT_SECRET, getSessionData, isAuthenticated, logout } from "./Auth";
 import history from './history';
 
 type RequestParams = {
@@ -23,7 +23,7 @@ Axios.interceptors.response.use(function (response) {
     return response;
 }, function (error) {
     if (error.response.status === 401) {
-        history.push("/admin/auth/login");
+        logout();
     }
     return Promise.reject(error);
 });
@@ -46,7 +46,7 @@ export const makePrivateRequest = ({ method = 'GET', url, data, params }: Reques
         }
         return makeRequest({ method, url, data, params, headers });
     }
-    history.push("/admin/auth/login");
+    history.push("/auth/login");
 }
 
 

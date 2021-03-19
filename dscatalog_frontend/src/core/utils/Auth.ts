@@ -1,4 +1,5 @@
 import jwtDecode from "jwt-decode";
+import history from './history';
 
 export const CLIENT_ID = "dscatalog";
 export const CLIENT_SECRET = "dscatalog123";
@@ -14,7 +15,7 @@ type DataLogin = {
 
 export type Role = 'ROLE_OPERATOR' | 'ROLE_ADMIN';
 
-type AccessToken = {
+export type AccessToken = {
     exp: number;
     user_name: string;
     authorities: Role[];
@@ -22,6 +23,11 @@ type AccessToken = {
 
 export const saveSessionData = (dataLogin: DataLogin) => {
     localStorage.setItem('AuthData', JSON.stringify(dataLogin));
+}
+
+export const logout = () => {
+   localStorage.removeItem('AuthData');
+   history.replace("/auth/login");
 }
 
 export const getSessionData = () => {
