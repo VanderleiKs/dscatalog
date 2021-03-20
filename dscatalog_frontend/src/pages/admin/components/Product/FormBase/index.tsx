@@ -16,7 +16,7 @@ const FormBase = ({title, children}: Props) => {
     return(
 
     <div className="card-base container-formbase">
-        <h3>{title}</h3>
+        <h3 className="title-card">{title}</h3>
         {children}
         <div className="container-formBase-actions">
             <button className="btn btn-outline-danger mr-3" onClick={handleCancel}>CANCELAR</button>

@@ -1,8 +1,10 @@
 import ProductPrice from 'core/components/productPrice';
 import { Product } from 'core/types/Product';
-import { makeRequest } from 'core/utils/Request';
+import history from 'core/utils/history';
+import { makePrivateRequest, makeRequest } from 'core/utils/Request';
 import ProductCard from 'pages/catalog/components/productCard';
 import React from 'react';
+import { toast } from 'react-toastify';
 import './styles.scss';
 
 type Props = {
@@ -13,7 +15,11 @@ type Props = {
 const Card = ({product, id}: Props) => {
 
     const handleDel = () => {
-        makeRequest({method: "DELETE", url: `/product/${id}`})
+        makePrivateRequest({method: "DELETE", url: `/products/${id}`})
+        ?.then(() => {
+            toast.success("Produto excluido com sucesso!");
+            history.replace("/admin/products");
+        });
     }
 
     return (
@@ -28,7 +34,7 @@ const Card = ({product, id}: Props) => {
                 {product.description}
             </div>
         </div>
-        <div className="container-buttons col-3">
+        <div className="container-buttons">
             <button className="btn btn-outline-secondary button">editar</button>
             <button className="btn btn-outline-danger button" onClick={handleDel}>excluir</button>
         </div>

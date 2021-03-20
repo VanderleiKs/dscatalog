@@ -7,7 +7,7 @@ import { Link, useHistory, useLocation } from 'react-router-dom';
 import AuthCard from '../Card';
 import './styles.scss';
 
-type FormData = {
+type FormState = {
     username: string;
     password: string;
 }
@@ -17,7 +17,7 @@ type LocationState = {
 }
 
 const Login = () => {
-    const { register, handleSubmit, errors } = useForm<FormData>();
+    const { register, handleSubmit, errors } = useForm<FormState>();
     const [hasError, setHasError] = useState(false);
     const history = useHistory();
     const location = useLocation<LocationState>();
@@ -25,7 +25,7 @@ const Login = () => {
     const { from } = location.state || { from: { pathname: "/admin" } };
 
 
-    const onSubmit = (data: FormData) => {
+    const onSubmit = (data: FormState) => {
         makeLogin(data)
             .then(response => {
                 setHasError(false);
@@ -68,9 +68,7 @@ const Login = () => {
                         placeholder="Senha"
                         className={`form-control input-base ${errors.password?.message ? 'is-invalid' : ''}`}
                         name="password"
-                        ref={register({
-                            required: "Campo Obrigatório"
-                        })}
+                        ref={register({required: "Campo Obrigatório"})}
                     />
                     {errors.password && (
                         <div className="invalid-feedback d-block">

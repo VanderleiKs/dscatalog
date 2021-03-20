@@ -1,4 +1,4 @@
-import { getAccessTokenDecoded, logout } from 'core/utils/Auth';
+import { getAccessTokenDecoded, isAuthenticated, logout } from 'core/utils/Auth';
 import React, { useEffect, useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import './style.scss';
@@ -9,14 +9,14 @@ const Navbar = () => {
     const location = useLocation();
 
     useEffect(() => {
-        setUserSession(getAccessTokenDecoded().user_name);
-        if (getAccessTokenDecoded().authorities?.some(role => role === 'ROLE_ADMIN')) {
-            setUserAuthorities('ADMIN');
+        setUserSession(isAuthenticated() ? getAccessTokenDecoded().user_name : '');
+        if (isAuthenticated()) {
+            getAccessTokenDecoded().authorities?.some(role =>
+                role === 'ROLE_ADMIN') ? setUserAuthorities('ADMIN') : setUserAuthorities('OPERATOR');
         }
         else {
-            setUserAuthorities('OPERATOR');
+            setUserAuthorities('');
         }
-
     }, [location]);
 
     const onLogout = () => {
