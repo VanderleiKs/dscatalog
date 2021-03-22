@@ -1,6 +1,6 @@
 import Pagination from 'core/components/Pagination';
 import { ProductResponse } from 'core/types/Product';
-import { makeRequest } from 'core/utils/Request';
+import { makePrivateRequest, makeRequest } from 'core/utils/Request';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import Card, { handleDel } from './Card';
@@ -19,18 +19,18 @@ const List = () => {
 
         const params = {
             page: activePage,
-            sizePage: 3
+            sizePage: 4
         }
 
-        makeRequest({url:"/products", params: params})
-        .then(response => setProductResponse(response.data));
+        makePrivateRequest({url:"/products", params: params})
+        ?.then(response => setProductResponse(response.data));
     }, [activePage, handleDel])
 
 
     return(
         <div>
-            <button className="btn btn-primary btn-lg" onClick={handleCreate}>adicionar</button>
-            <div className="container-cards mt-5 d-grid">
+            <button className="btn btn-primary" onClick={handleCreate}>ADICIONAR</button>
+            <div className="admin-container-cards">
                 {productResponse?.content.map(product => (
                     <Card key={product.id} product={product} id={product.id}/>
                 ))}

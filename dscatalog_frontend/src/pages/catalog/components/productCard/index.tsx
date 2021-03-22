@@ -10,11 +10,11 @@ type Props = {
 const ProductCard = ({ product }: Props) => (
 
     <div className="catalog-products card-base">
-        <img className="product-image" src={product.imgUrl} alt={product.name}/>
+        <img className="product-image" src={product.imgUrl} alt={product.name} />
         <div className="product-name">
             <span>{product.name}</span>
         </div>
-        <ProductPrice price={product.price}/>
+            <ProductPrice price={product.price} />
     </div>
 );
 

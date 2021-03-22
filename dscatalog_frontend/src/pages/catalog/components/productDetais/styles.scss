@@ -2,15 +2,19 @@
     margin: 20px 40px 20px 40px ;
     border-radius: 20px;
     padding: 35px 50px 35px 50px;
+
+    .container-product-price {
+        margin-top: 15px;
+        
+        .product-price{
+            font-size: 48px;
+        }
+    }
 }
 
 .product-detais-container {
     display: flex;
     margin-top: 20px;
-}
-
-.product-detais-card .product-price {
-    font-size: 48px;
 }
 
 .container-link-golback {
@@ -57,7 +61,6 @@ text-transform: uppercase;
     line-height: 42px;
     letter-spacing: -0.015em;
     color: #263238;
-    margin-bottom: 5px;
 }
 
 .container-detais-text {

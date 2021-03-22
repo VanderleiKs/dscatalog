@@ -5,4 +5,10 @@ $theme-colors: (
     "primary" : #407bff
 );
 
+btn-outline-secondary{
+    border-color: #407bff;
+    color: #407bff
+}
+    
+
 @import '~bootstrap/scss/bootstrap.scss';
