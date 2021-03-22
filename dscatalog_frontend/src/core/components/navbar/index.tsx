@@ -9,13 +9,15 @@ const Navbar = () => {
     const location = useLocation();
 
     useEffect(() => {
-        setUserSession(isAuthenticated() ? getAccessTokenDecoded().user_name : '');
         if (isAuthenticated()) {
+            setUserSession(getAccessTokenDecoded().user_name);
             getAccessTokenDecoded().authorities?.some(role =>
                 role === 'ROLE_ADMIN') ? setUserAuthorities('ADMIN') : setUserAuthorities('OPERATOR');
         }
         else {
-            setUserAuthorities('');
+            localStorage.removeItem('AuthData');
+            setUserSession('');
+            setUserAuthorities(''); 
         }
     }, [location]);
 

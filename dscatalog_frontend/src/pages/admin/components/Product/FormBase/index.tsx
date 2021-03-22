@@ -11,16 +11,16 @@ const FormBase = ({title, children}: Props) => {
     const history = useHistory();
 
     const handleCancel = () => {
-        history.push('../');
+        history.goBack();
     }   
     return(
 
     <div className="card-base container-formbase">
-        <h3 className="title-card">{title}</h3>
+        <h3 className="formbase-title">{title}</h3>
         {children}
         <div className="container-formBase-actions">
-            <button className="btn btn-outline-danger mr-3" onClick={handleCancel}>CANCELAR</button>
-            <button className="btn btn-primary">CADASTRAR</button>
+            <button className="btn btn-outline-danger mr-3 formbase-buttton" onClick={handleCancel}>CANCELAR</button>
+            <button className="btn btn-primary formbase-buttton">CADASTRAR</button>
         </div>
     </div>
 

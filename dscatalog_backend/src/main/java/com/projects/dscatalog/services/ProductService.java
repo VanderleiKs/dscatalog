@@ -1,5 +1,8 @@
 package com.projects.dscatalog.services;
 
+import java.net.URI;
+import java.time.Instant;
+
 import com.projects.dscatalog.dto.requests.ProductDTO;
 import com.projects.dscatalog.dto.responses.ResponseMessage;
 import com.projects.dscatalog.entities.Product;
@@ -7,13 +10,12 @@ import com.projects.dscatalog.exceptions.CatalogNotFoundException;
 import com.projects.dscatalog.exceptions.CatalogStandardException;
 import com.projects.dscatalog.repositories.CategoryRepository;
 import com.projects.dscatalog.repositories.ProductRepository;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
-import java.net.URI;
 
 @Service
 public class ProductService {
@@ -31,13 +33,13 @@ public class ProductService {
     }
 
     //Save new Product
-    public ResponseEntity<ResponseMessage> saveProduct(ProductDTO productDTO){
+    public ResponseEntity<ProductDTO> saveProduct(ProductDTO productDTO){
         if(productRepository.findByName(productDTO.getName()) != null){
             throw new CatalogStandardException("Product already registered");
         }
         Product product = productRepository.save(dtoToProduct(productDTO, new Product()));
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(product.getId()).toUri();
-        return ResponseEntity.created(uri).body(responseMessage("Save with success!"));
+        return ResponseEntity.created(uri).body(new ProductDTO(product));
     }
 
     public ProductDTO findById(Long id) {
@@ -63,7 +65,7 @@ public class ProductService {
         product.setDescription(productDTO.getDescription());
         product.setPrice(productDTO.getPrice());
         product.setImgUrl(productDTO.getImgUrl());
-
+        product.setDate(Instant.now());
         product.getCategories().clear();
         productDTO.getCategories().forEach(
                 categoryDTO ->

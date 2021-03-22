@@ -3,7 +3,7 @@ import { ProductResponse } from 'core/types/Product';
 import { makeRequest } from 'core/utils/Request';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import Card from './Card';
+import Card, { handleDel } from './Card';
 import './styles.scss';
 
 const List = () => {
@@ -24,7 +24,7 @@ const List = () => {
 
         makeRequest({url:"/products", params: params})
         .then(response => setProductResponse(response.data));
-    }, [activePage])
+    }, [activePage, handleDel])
 
 
     return(

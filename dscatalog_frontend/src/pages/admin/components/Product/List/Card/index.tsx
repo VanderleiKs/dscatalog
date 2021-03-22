@@ -3,7 +3,7 @@ import { Product } from 'core/types/Product';
 import history from 'core/utils/history';
 import { makePrivateRequest, makeRequest } from 'core/utils/Request';
 import ProductCard from 'pages/catalog/components/productCard';
-import React from 'react';
+import React, { Component } from 'react';
 import { toast } from 'react-toastify';
 import './styles.scss';
 
@@ -12,9 +12,11 @@ type Props = {
     id: number;
 }
 
+export var handleDel;
+
 const Card = ({product, id}: Props) => {
 
-    const handleDel = () => {
+   handleDel = () => {
         makePrivateRequest({method: "DELETE", url: `/products/${id}`})
         ?.then(() => {
             toast.success("Produto excluido com sucesso!");
