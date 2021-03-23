@@ -29,15 +29,10 @@ public class ProductDTO {
         this.setPrice(product.getPrice());
         this.setDescription(product.getDescription());
         this.setImgUrl(product.getImgUrl());
-        //product.getCategories().forEach(cat -> this.categories.add(new CategoryDTO(cat)));
     }
 
     public ProductDTO(Product product, Set<Category> categories) {
-        this.id = product.getId();
-        this.setName(product.getName());
-        this.setPrice(product.getPrice());
-        this.setDescription(product.getDescription());
-        this.setImgUrl(product.getImgUrl());
+        this(product);
         categories.forEach(cat -> this.categories.add(new CategoryDTO(cat)));
     }
 

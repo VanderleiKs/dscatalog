@@ -1,6 +1,8 @@
 export type ProductResponse = {
     content: Product[];
     totalPages: number;
+    totalElements: number;
+    size: number;
 }
 
 export type Product = {
@@ -11,6 +13,11 @@ export type Product = {
     imgUrl: string;
     date: string;
     categories: Categories[];
+}
+
+export type CategoryResponse = {
+    content: Categories[];
+    totalPages: number;
 }
 
 export type Categories = {

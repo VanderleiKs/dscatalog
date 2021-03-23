@@ -29,7 +29,8 @@ public class ProductService {
 
     public ResponseEntity<Page<ProductDTO>> findAll(PageRequest pageRequest) {
        Page<Product> products =  productRepository.findAll(pageRequest);
-        return ResponseEntity.ok(products.map(ProductDTO::new));
+        productRepository.find(products.toList());
+        return ResponseEntity.ok(products.map(product -> new ProductDTO(product, product.getCategories())));
     }
 
     //Save new Product
