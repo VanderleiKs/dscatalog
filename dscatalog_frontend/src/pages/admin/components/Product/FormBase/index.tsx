@@ -5,13 +5,14 @@ import './styles.scss';
 type Props = {
     title: string;
     children: React.ReactNode;
+    nameButtonCad: string;
 }
 
-const FormBase = ({title, children}: Props) => {
+const FormBase = ({title, children, nameButtonCad}: Props) => {
     const history = useHistory();
 
     const handleCancel = () => {
-        history.goBack();
+        history.replace("/admin/products");
     }   
     return(
 
@@ -20,7 +21,7 @@ const FormBase = ({title, children}: Props) => {
         {children}
         <div className="container-formBase-actions">
             <button className="btn btn-outline-danger mr-3 formbase-buttton" onClick={handleCancel}>CANCELAR</button>
-            <button className="btn btn-primary formbase-buttton">CADASTRAR</button>
+            <button className="btn btn-primary formbase-buttton">{nameButtonCad}</button>
         </div>
     </div>
 

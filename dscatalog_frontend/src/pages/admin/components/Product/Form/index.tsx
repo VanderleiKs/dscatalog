@@ -1,9 +1,10 @@
 import history from 'core/utils/history';
-import { makePrivateRequest } from 'core/utils/Request';
+import { makePrivateRequest, makeRequest } from 'core/utils/Request';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import FormBase from '../FormBase';
 import { toast } from 'react-toastify';
+import { useParams } from 'react-router-dom';
 
 
 type FormState = {
@@ -23,21 +24,43 @@ type Categories = {
     name: string;
 }
 
+type ParamsType = {
+    productId: string;
+}
+
 const Form = () => {
-    const { handleSubmit, register, errors } = useForm<FormState>();
+    const { handleSubmit, register, errors, setValue } = useForm<FormState>();
     const [categories, setCategories] = useState<catResponse>();
+    const { productId } = useParams<ParamsType>();
+    const isEditing = productId !== 'create';
 
     useEffect(() => {
         makePrivateRequest({ url: "/categories" })
             ?.then((response) => setCategories(response.data));
     }, [])
 
+    useEffect(() => {
+        if (isEditing) {
+            makeRequest({ url: `/products/${productId}` })
+                .then(response => {
+                    setValue('name', response.data.name);
+                    setValue('price', response.data.price);
+                    setValue('description', response.data.description);
+                    setValue('imgUrl', response.data.imgUrl);
+                })
+        }
+    }, [productId, isEditing, setValue])
+
     const onSubmit = (data: FormState) => {
         const payLoad = {
             ...data,
             categories: [{ id: data.categories }]
         }
-        makePrivateRequest({ method: "POST", url: "/products", data: payLoad })
+        makePrivateRequest({
+            method: isEditing ? "PUT" : "POST",
+            url: isEditing ? `/products/${productId}` : "/products",
+            data: payLoad
+        })
             ?.then(() => {
                 toast.success("Produto salvo com sucesso!");
                 history.goBack();
@@ -47,7 +70,10 @@ const Form = () => {
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
-            <FormBase title="CADASTRAR UM PRODUTO">
+            <FormBase
+                title={isEditing ? "EDITAR PRODUTO" : "CADASTRAR PRODUTO"}
+                nameButtonCad={isEditing ? "SALVAR" : "CADASTRAR"}
+            >
                 <div className="row">
                     <div className="col-6">
                         <div className="margin-botton-25">

@@ -7,6 +7,7 @@ import com.projects.dscatalog.dto.responses.ResponseMessage;
 import com.projects.dscatalog.services.ProductService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,9 +24,11 @@ public class ProductController {
     @GetMapping
     public ResponseEntity<Page<ProductDTO>> findAll(
             @RequestParam(value = "page", defaultValue = "0") Integer page,
-            @RequestParam(value = "sizePage", defaultValue = "3") Integer sizePage
+            @RequestParam(value = "sizePage", defaultValue = "3") Integer sizePage,
+            @RequestParam(value = "direction", defaultValue = "Asc") String direction,
+            @RequestParam(value = "orderBy", defaultValue = "name") String orderBy
     ){
-        PageRequest pageRequest = PageRequest.of(page, sizePage);
+        PageRequest pageRequest = PageRequest.of(page, sizePage, Direction.valueOf(direction), orderBy);
         return productService.findAll(pageRequest);
     }
 

@@ -1,14 +1,12 @@
 import Pagination from 'core/components/Pagination';
 import { ProductResponse } from 'core/types/Product';
-import { makePrivateRequest, makeRequest } from 'core/utils/Request';
+import { makeRequest } from 'core/utils/Request';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import Card from './Card';
 import './styles.scss';
 
-
-export var handleDel;
+export var updateDel: { (): void; (): void; };
 
 const List = () => {
     const [productResponse, setProductResponse] = useState<ProductResponse>();
@@ -16,27 +14,24 @@ const List = () => {
     const [delProduct, setDelProduct] = useState(false);
     const history = useHistory();
 
-    const handleCreate = () => {
-        history.push('/admin/products/create');
-    }
-
-    handleDel = (id: number) => {
-        makePrivateRequest({ method: "DELETE", url: `/products/${id}` })
-            ?.then(() => {
-                toast.success("Produto excluido com sucesso!");
-            });
+    updateDel = () => {
         setDelProduct(true);
-
         if (productResponse && (productResponse.totalElements - 1 > 0)
             && ((productResponse.totalElements - 1) % productResponse.size === 0)) {
             setActivePage(activePage - 1);
         }
     }
 
+    const handleCreate = () => {
+        history.push('/admin/products/create');
+    }
+
     useEffect(() => {
         const params = {
             page: activePage,
-            sizePage: 4
+            sizePage: 4,
+            direction: 'DESC',
+            orderBy: 'id'
         }
         makeRequest({ url: "/products", params: params })
             .then(response => setProductResponse(response.data));
@@ -63,5 +58,4 @@ const List = () => {
 
     );
 }
-
 export default List;
