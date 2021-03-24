@@ -1,26 +1,16 @@
 import ProductPrice from 'core/components/productPrice';
 import { Product } from 'core/types/Product';
-import { makePrivateRequest } from 'core/utils/Request';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import { updateDel } from '..';
 import './styles.scss';
 
 type Props = {
-    id: number;
     product: Product;
+    onRemove: (productId: number) => void;
 }
 
-const Card = ({ product, id }: Props) => {
+const Card = ({ product, onRemove }: Props) => {
 
-    const handleDel = () => {
-        makePrivateRequest({ method: "DELETE", url: `/products/${id}` })
-            ?.then(() => {
-                updateDel();
-                toast.success("Produto excluido com sucesso!");
-            });
-    }
 
     return (
         <div className="card-base container-card">
@@ -43,7 +33,7 @@ const Card = ({ product, id }: Props) => {
                     editar
                 </Link>
                 <button className="btn btn-outline-danger admin-card-button btn-block"
-                    onClick={handleDel}>
+                    onClick={() => onRemove(product.id)}>
                     excluir
             </button>
             </div>

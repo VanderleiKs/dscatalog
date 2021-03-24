@@ -16,7 +16,9 @@ const Catalog = () => {
     useEffect(() => {
         const params = {
             page: activePage,
-            sizePage: 10
+            sizePage: 10,
+            direction: 'DESC',
+            orderBy: 'id'
         }
 
         setIsLoading(true);
