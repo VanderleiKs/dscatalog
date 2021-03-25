@@ -1,7 +1,7 @@
+import { useCallback, useEffect, useState } from 'react';
 import Pagination from 'core/components/Pagination';
 import { ProductResponse } from 'core/types/Product';
 import { makePrivateRequest, makeRequest } from 'core/utils/Request';
-import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Card from './Card';
@@ -26,21 +26,19 @@ const List = () => {
     useEffect(() => { getProducts() }, [getProducts]);
 
     const onRemove = (productID: number) => {
-        if (window.confirm('Deseja realmente excluir?')) {
-            makePrivateRequest({ method: "DELETE", url: `/products/${productID}` })
-                ?.then(() => {
-                    toast.success('Produto excluido com sucesso!');
-                    if (productResponse && (productResponse.totalElements - 1 > 0)
-                        && ((productResponse.totalElements - 1) % productResponse.size === 0)) {
-                        setActivePage(activePage - 1);
-                    }
-                    else {
-                        getProducts();
-                    }
-                }).catch(() => {
-                    toast.error('Erro ao excluir produto');
-                });
-        }
+        makePrivateRequest({ method: "DELETE", url: `/products/${productID}` })
+            ?.then(() => {
+                toast.success('Produto excluido com sucesso!');
+                if (productResponse && (productResponse.totalElements - 1 > 0)
+                    && ((productResponse.totalElements - 1) % productResponse.size === 0)) {
+                    activePage > 0 ? setActivePage(activePage - 1) : getProducts();
+                }
+                else {
+                    getProducts();
+                }
+            }).catch(() => {
+                toast.error('Erro ao excluir produto');
+            });
     }
 
     const handleCreate = () => {
