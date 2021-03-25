@@ -6,10 +6,12 @@ import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Card from './Card';
 import './styles.scss';
+import CardLoader from '../Loaders/CardLoader';
 
 const List = () => {
     const [productResponse, setProductResponse] = useState<ProductResponse>();
     const [activePage, setActivePage] = useState(0);
+    const [isLoading, setIsLoading] = useState(false);
     const history = useHistory();
 
     const getProducts = useCallback(() => {
@@ -19,8 +21,10 @@ const List = () => {
             direction: 'DESC',
             orderBy: 'id'
         }
+        setIsLoading(true);
         makeRequest({ url: "/products", params: params })
-            .then(response => setProductResponse(response.data));
+            .then(response => setProductResponse(response.data))
+            .finally(() => setIsLoading(false));
     }, [activePage]);
 
     useEffect(() => { getProducts() }, [getProducts]);
@@ -49,9 +53,11 @@ const List = () => {
         <div>
             <button className="btn btn-primary" onClick={handleCreate}>ADICIONAR</button>
             <div className="admin-container-cards">
-                {productResponse?.content.map(product => (
-                    <Card key={product.id} product={product} onRemove={onRemove} />
-                ))}
+                {isLoading ? <CardLoader /> : (
+                    productResponse?.content.map(product => (
+                        <Card key={product.id} product={product} onRemove={onRemove} />
+                    ))
+                )}
             </div>
             {productResponse &&
                 <Pagination
