@@ -19,16 +19,16 @@ const Card = ({ product, onRemove }: Props) => {
             <Modal show={isRemoving} onHide={handleClose} backdrop="static"
                 keyboard={false}>
                 <Modal.Header bsPrefix="modal-header">
-                    <Modal.Title>CONFIRMAÇÃO</Modal.Title>
+                    <Modal.Title>Confirmação</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>Deseja realmente excluir o Produto?</Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>
                         Cancelar
-                        </Button>
+                    </Button>
                     <Button variant="danger" onClick={() => onRemove(product.id)}>
                         Confimar
-                        </Button>
+                    </Button>
                 </Modal.Footer>
             </Modal>
 

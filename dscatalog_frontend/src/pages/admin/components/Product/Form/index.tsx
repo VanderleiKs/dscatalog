@@ -1,25 +1,23 @@
 import history from 'core/utils/history';
 import { makePrivateRequest, makeRequest } from 'core/utils/Request';
 import React, { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import FormBase from '../FormBase';
-import { toast } from 'react-toastify';
+import { useForm, Controller } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
+import Select from 'react-select';
+import { toast } from 'react-toastify';
+import FormBase from '../FormBase';
+import './styles.scss';
 
 
 type FormState = {
     name: string,
     price: string,
-    categories: string,
+    categories: Category[],
     description: string
     imgUrl: string;
 }
 
-type catResponse = {
-    content: Categories[];
-}
-
-type Categories = {
+type Category = {
     id: number;
     name: string;
 }
@@ -29,14 +27,18 @@ type ParamsType = {
 }
 
 const Form = () => {
-    const { handleSubmit, register, errors, setValue } = useForm<FormState>();
-    const [categories, setCategories] = useState<catResponse>();
+    const { handleSubmit, register, errors, setValue, control } = useForm<FormState>();
+    const [isLOadingCategories, setIsLoadingCategories] = useState(false);
+    const [categories, setCategories] = useState<Category[]>();
     const { productId } = useParams<ParamsType>();
     const isEditing = productId !== 'create';
 
+
     useEffect(() => {
-        makePrivateRequest({ url: "/categories" })
-            ?.then((response) => setCategories(response.data));
+        setIsLoadingCategories(true);
+        makeRequest({ url: "/categories" })
+            .then((response) => setCategories(response.data.content))
+            .finally(() => setIsLoadingCategories(false));
     }, [])
 
     useEffect(() => {
@@ -45,21 +47,19 @@ const Form = () => {
                 .then(response => {
                     setValue('name', response.data.name);
                     setValue('price', response.data.price);
+                    setValue('categories', response.data.categories);
                     setValue('description', response.data.description);
                     setValue('imgUrl', response.data.imgUrl);
+
                 })
         }
     }, [productId, isEditing, setValue])
 
     const onSubmit = (data: FormState) => {
-        const payLoad = {
-            ...data,
-            categories: [{ id: data.categories }]
-        }
         makePrivateRequest({
             method: isEditing ? "PUT" : "POST",
             url: isEditing ? `/products/${productId}` : "/products",
-            data: payLoad
+            data
         })
             ?.then(() => {
                 toast.success("Produto salvo com sucesso!");
@@ -120,17 +120,23 @@ const Form = () => {
                             )}
                         </div>
                         <div>
-                            <select className="form-control input-base"
+                            <Controller
                                 name="categories"
-                                ref={register({ required: "Campo Obrigatório" })}
-                            >
-                                {categories?.content.map(categorie => (
-                                    <option key={categorie.id} value={categorie.id}>{categorie.name}</option>
-                                ))}
-                            </select>
+                                as={Select}
+                                rules={{ required: true }}
+                                control={control}
+                                defaultValue=''
+                                isLoading={isLOadingCategories}
+                                isMulti
+                                classNamePrefix="category-select"
+                                placeholder="Categoria"
+                                options={categories}
+                                getOptionLabel={(option: Category) => option.name}
+                                getOptionValue={(option: Category) => String(option.id)}
+                            />
                             {errors.categories && (
                                 <div className="invalid-feedback d-block">
-                                    {errors.categories.message}
+                                    Campo Obrigatório
                                 </div>
                             )}
                         </div>
