@@ -12,6 +12,7 @@ const List = () => {
     const [productResponse, setProductResponse] = useState<ProductResponse>();
     const [activePage, setActivePage] = useState(0);
     const [isLoading, setIsLoading] = useState(false);
+    const [name, setName] = useState('');
     const history = useHistory();
 
     const getProducts = useCallback(() => {
@@ -19,13 +20,16 @@ const List = () => {
             page: activePage,
             sizePage: 4,
             direction: 'DESC',
-            orderBy: 'id'
+            orderBy: 'id',
+            name: name
         }
+        console.log(name);
+        
         setIsLoading(true);
         makeRequest({ url: "/products", params: params })
             .then(response => setProductResponse(response.data))
             .finally(() => setIsLoading(false));
-    }, [activePage]);
+    }, [activePage, name]);
 
     useEffect(() => { getProducts() }, [getProducts]);
 
@@ -49,9 +53,24 @@ const List = () => {
         history.push('/admin/products/create');
     }
 
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        console.log(event);
+        
+    }
+
     return (
         <div>
-            <button className="btn btn-primary" onClick={handleCreate}>ADICIONAR</button>
+
+            <div className="d-flex">
+                <button className="btn btn-primary mr-5" onClick={handleCreate}>ADICIONAR</button>
+                <input type="text" className="form-control" 
+                    placeholder="buscar" name="busca" 
+                    onChange={(e) => setName(e.target.value)}/>
+            
+
+            
+            </div>
             <div className="admin-container-cards">
                 {isLoading ? <CardLoader /> : (
                     productResponse?.content.map(product => (

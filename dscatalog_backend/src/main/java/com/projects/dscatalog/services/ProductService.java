@@ -2,9 +2,12 @@ package com.projects.dscatalog.services;
 
 import java.net.URI;
 import java.time.Instant;
+import java.util.Arrays;
+import java.util.List;
 
 import com.projects.dscatalog.dto.requests.ProductDTO;
 import com.projects.dscatalog.dto.responses.ResponseMessage;
+import com.projects.dscatalog.entities.Category;
 import com.projects.dscatalog.entities.Product;
 import com.projects.dscatalog.exceptions.CatalogNotFoundException;
 import com.projects.dscatalog.exceptions.CatalogStandardException;
@@ -27,8 +30,9 @@ public class ProductService {
         this.categoryRepository = categoryRepository;
     }
 
-    public ResponseEntity<Page<ProductDTO>> findAll(PageRequest pageRequest) {
-       Page<Product> products =  productRepository.findAll(pageRequest);
+    public ResponseEntity<Page<ProductDTO>> findAll(Long categoryId, String name, PageRequest pageRequest) {
+        List<Category> categories = (categoryId == 0) ? null : Arrays.asList(categoryRepository.getOne(categoryId));
+        Page<Product> products =  productRepository.findProducts(categories, name, pageRequest);
         productRepository.find(products.toList());
         return ResponseEntity.ok(products.map(product -> new ProductDTO(product, product.getCategories())));
     }

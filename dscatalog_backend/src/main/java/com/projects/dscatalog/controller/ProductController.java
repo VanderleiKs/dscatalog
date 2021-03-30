@@ -25,11 +25,13 @@ public class ProductController {
     public ResponseEntity<Page<ProductDTO>> findAll(
             @RequestParam(value = "page", defaultValue = "0") Integer page,
             @RequestParam(value = "sizePage", defaultValue = "3") Integer sizePage,
-            @RequestParam(value = "direction", defaultValue = "Asc") String direction,
-            @RequestParam(value = "orderBy", defaultValue = "name") String orderBy
+            @RequestParam(value = "direction", defaultValue = "ASC") String direction,
+            @RequestParam(value = "orderBy", defaultValue = "name") String orderBy,
+            @RequestParam(value = "categoryId", defaultValue = "0") Long categoryId,
+            @RequestParam(value = "name", defaultValue = "") String name
     ){
         PageRequest pageRequest = PageRequest.of(page, sizePage, Direction.valueOf(direction), orderBy);
-        return productService.findAll(pageRequest);
+        return productService.findAll(categoryId, name.trim(), pageRequest);
     }
 
     @GetMapping("/{id}")

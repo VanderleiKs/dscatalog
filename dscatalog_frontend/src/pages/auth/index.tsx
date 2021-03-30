@@ -1,11 +1,10 @@
-import React from 'react';
-import './styles.scss';
 import { ReactComponent as AuthImage } from 'core/assets/images/auth.svg';
-import {Switch, Route, Redirect} from 'react-router-dom';
-import AuthCard from './components/Card';
+import React from 'react';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import Login from './components/Login';
-import Register from './components/Register';
 import Recover from './components/Recover';
+import Register from './components/Register';
+import './styles.scss';
 
 const Auth = () => (
     <div className="auth-container">
