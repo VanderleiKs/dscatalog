@@ -25,6 +25,7 @@ public class ProductService {
 
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
+
     public ProductService(ProductRepository productRepository, CategoryRepository categoryRepository) {
         this.productRepository = productRepository;
         this.categoryRepository = categoryRepository;
@@ -32,18 +33,19 @@ public class ProductService {
 
     public ResponseEntity<Page<ProductDTO>> findAll(Long categoryId, String name, PageRequest pageRequest) {
         List<Category> categories = (categoryId == 0) ? null : Arrays.asList(categoryRepository.getOne(categoryId));
-        Page<Product> products =  productRepository.findProducts(categories, name, pageRequest);
+        Page<Product> products = productRepository.findProducts(categories, name, pageRequest);
         productRepository.find(products.toList());
         return ResponseEntity.ok(products.map(product -> new ProductDTO(product, product.getCategories())));
     }
 
-    //Save new Product
-    public ResponseEntity<ProductDTO> saveProduct(ProductDTO productDTO){
-        if(productRepository.findByName(productDTO.getName()) != null){
+    // Save new Product
+    public ResponseEntity<ProductDTO> saveProduct(ProductDTO productDTO) {
+        if (productRepository.findByName(productDTO.getName()) != null) {
             throw new CatalogStandardException("Product already registered");
         }
         Product product = productRepository.save(dtoToProduct(productDTO, new Product()));
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(product.getId()).toUri();
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(product.getId())
+                .toUri();
         return ResponseEntity.created(uri).body(new ProductDTO(product));
     }
 
@@ -52,19 +54,19 @@ public class ProductService {
         return new ProductDTO(product, product.getCategories());
     }
 
-    //Update product
-    public ResponseEntity<ResponseMessage> updateProduct(Long id, ProductDTO productDTO){
+    // Update product
+    public ResponseEntity<ResponseMessage> updateProduct(Long id, ProductDTO productDTO) {
         Product product = verifyIfExistCategoryById(id);
         productRepository.save(dtoToProduct(productDTO, product));
         return ResponseEntity.ok(responseMessage("Update with success!"));
     }
 
-    public ResponseEntity<ResponseMessage> deleteProduct(long id){
+    public ResponseEntity<ResponseMessage> deleteProduct(long id) {
         productRepository.deleteById(id);
         return ResponseEntity.ok().body(responseMessage("Deleted with Success!"));
     }
 
-    //Converte for product
+    // Converte for product
     private Product dtoToProduct(ProductDTO productDTO, Product product) {
         product.setName(productDTO.getName());
         product.setDescription(productDTO.getDescription());
@@ -72,21 +74,18 @@ public class ProductService {
         product.setImgUrl(productDTO.getImgUrl());
         product.setDate(Instant.now());
         product.getCategories().clear();
-        productDTO.getCategories().forEach(
-                categoryDTO ->
-                    product.getCategories().add(categoryRepository.getOne(categoryDTO.getId()))
-        );
+        productDTO.getCategories()
+                .forEach(categoryDTO -> product.getCategories().add(categoryRepository.getOne(categoryDTO.getId())));
         return product;
     }
 
-    //Verify if exist product in database
+    // Verify if exist product in database
     private Product verifyIfExistCategoryById(Long id) {
-        return productRepository.findById(id)
-                .orElseThrow(() -> new CatalogNotFoundException("Product not found"));
+        return productRepository.findById(id).orElseThrow(() -> new CatalogNotFoundException("Product not found"));
     }
 
-    //Response Message
-    private ResponseMessage responseMessage(String message){
+    // Response Message
+    private ResponseMessage responseMessage(String message) {
         return ResponseMessage.builder().message(message).build();
     }
 }

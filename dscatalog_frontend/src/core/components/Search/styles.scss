@@ -1,0 +1,48 @@
+.container-search {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 15px;
+    width: 70%;
+    border-radius: 10px;
+}
+
+.input-search-name{
+    flex: 1;
+    border-bottom: 1px solid #E1E1E1;
+    display: flex;
+    align-items: center;
+
+    input{
+        border: none;
+
+        &:focus{
+            box-shadow: none;
+        }
+    }
+}
+
+.category-search{
+    flex: 1;
+    margin-left: 40px;
+    margin-right: 40px;
+    border-bottom: 1px solid #E1E1E1;
+
+    .category-seach-product__control {
+        border: none;
+    }
+    
+    .category-seach-product__control--is-focused {
+        box-shadow: none;
+    }
+    
+    .category-seach-product__indicator-separator {
+        display: none;
+    }
+
+    .category-seach-product__placeholder {
+        color: #9E9E9E;
+    }
+}
+
+
+

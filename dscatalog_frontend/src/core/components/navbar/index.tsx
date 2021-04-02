@@ -9,9 +9,9 @@ const Navbar = () => {
     const location = useLocation();
 
     useEffect(() => {
-        if (isAuthenticated()) {
+        if (isAuthenticated() && getAccessTokenDecoded().authorities) {
             setUserSession(getAccessTokenDecoded().user_name);
-            getAccessTokenDecoded().authorities?.some(role =>
+            getAccessTokenDecoded().authorities.some(role =>
                 role === 'ROLE_ADMIN') ? setUserAuthorities('ADMIN') : setUserAuthorities('OPERATOR');
         }
         else {

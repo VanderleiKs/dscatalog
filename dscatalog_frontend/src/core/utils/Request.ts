@@ -1,6 +1,5 @@
 import Axios, { Method } from "axios";
 import qs from "qs";
-import { Redirect } from "react-router";
 import { CLIENT_ID, CLIENT_SECRET, getSessionData, isAuthenticated, logout } from "./Auth";
 import history from './history';
 
