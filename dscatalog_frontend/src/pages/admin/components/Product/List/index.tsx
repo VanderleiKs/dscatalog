@@ -1,35 +1,34 @@
-import { useCallback, useEffect, useState } from 'react';
 import Pagination from 'core/components/Pagination';
+import SearchProducts, { SearchForm } from 'core/components/Search';
 import { ProductResponse } from 'core/types/Product';
 import { makePrivateRequest, makeRequest } from 'core/utils/Request';
+import { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import CardLoader from '../Loaders/CardLoader';
 import Card from './Card';
 import './styles.scss';
-import CardLoader from '../Loaders/CardLoader';
 
 const List = () => {
     const [productResponse, setProductResponse] = useState<ProductResponse>();
     const [activePage, setActivePage] = useState(0);
     const [isLoading, setIsLoading] = useState(false);
-    const [name, setName] = useState('');
     const history = useHistory();
 
-    const getProducts = useCallback(() => {
+    const getProducts = useCallback((searchForm?: SearchForm) => {
         const params = {
             page: activePage,
             sizePage: 4,
             direction: 'DESC',
             orderBy: 'id',
-            name: name
+            name: searchForm?.name,
+            categoryId: searchForm?.categoryId
         }
-        console.log(name);
-        
         setIsLoading(true);
         makeRequest({ url: "/products", params: params })
             .then(response => setProductResponse(response.data))
             .finally(() => setIsLoading(false));
-    }, [activePage, name]);
+    }, [activePage]);
 
     useEffect(() => { getProducts() }, [getProducts]);
 
@@ -53,23 +52,11 @@ const List = () => {
         history.push('/admin/products/create');
     }
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        console.log(event);
-        
-    }
-
     return (
         <div>
-
-            <div className="d-flex">
-                <button className="btn btn-primary mr-5" onClick={handleCreate}>ADICIONAR</button>
-                <input type="text" className="form-control" 
-                    placeholder="buscar" name="busca" 
-                    onChange={(e) => setName(e.target.value)}/>
-            
-
-            
+            <div className="d-flex justify-content-between">
+                <button className="btn btn-primary" onClick={handleCreate}>ADICIONAR</button>
+                <SearchProducts onSearch={searchForm => getProducts(searchForm)} />
             </div>
             <div className="admin-container-cards">
                 {isLoading ? <CardLoader /> : (
