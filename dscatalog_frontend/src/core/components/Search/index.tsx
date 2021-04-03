@@ -1,24 +1,21 @@
-import { useEffect, useState } from 'react';
 import { ReactComponent as SearchIcon } from 'core/assets/images/search_icon.svg';
-import { Category } from 'pages/admin/components/Categories';
 import { makeRequest } from 'core/utils/Request';
+import { Category } from 'pages/admin/components/Categories';
+import { useEffect, useState } from 'react';
 import Select from 'react-select';
 import './styles.scss';
 
-export type SearchForm = {
-    name?: string,
-    categoryId?: number
-}
-
 type Props = {
-    onSearch: (searchForm: SearchForm) => void
+    name?: string;
+    category?: Category;
+    handleChangeName: (name: string) => void;
+    handleChangeCategory: (category: Category) => void;
+    cleanFilterSearch: () => void;
 }
 
-const SearchProducts = ({onSearch}: Props) => {
+const SearchProducts = ({name, category, handleChangeName, handleChangeCategory, cleanFilterSearch}: Props) => {
     const [isLOadingCategories, setIsLoadingCategories] = useState(false);
     const [categories, setCategories] = useState<Category[]>();
-    const [name, setName] = useState('');
-    const [category, setCategory] = useState<Category>();
 
     useEffect(() => {
         setIsLoadingCategories(true);
@@ -26,22 +23,6 @@ const SearchProducts = ({onSearch}: Props) => {
             .then((response) => setCategories(response.data.content))
             .finally(() => setIsLoadingCategories(false));
     }, [])
-
-    const handleChangeName = (name: string) => {
-        setName(name);
-        onSearch({name, categoryId: category?.id});
-    }
-
-    const handleChangeCategory = (category: Category) => {
-        setCategory(category);
-        onSearch({name, categoryId: category?.id});
-    }
-
-    const cleanFilterSearch = () => {
-        setName('');
-        setCategory(undefined);
-        onSearch({});
-    }
 
     return (
         <div className="container-search card-base">

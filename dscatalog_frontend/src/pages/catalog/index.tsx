@@ -6,23 +6,26 @@ import { ProductLoader } from './components/Loaders/ProductLoader';
 import ProductCard from './components/productCard';
 import './styles.scss';
 import Pagination from 'core/components/Pagination';
-import Search, {SearchForm} from 'core/components/Search';
+import Search from 'core/components/Search';
+import { Category } from 'pages/admin/components/Categories';
 
 const Catalog = () => {
 
     const [productResponse, setProductResponse] = useState<ProductResponse>();
     const [isLoading, setIsLoading] = useState(false);
     const [activePage, setActivePage] = useState(0);
+    const [name, setName] = useState('');
+    const [category, setCategory] = useState<Category>();
 
 
-    const getProducts = useCallback((searchForm?: SearchForm) => {
+    const getProducts = useCallback(() => {
         const params = {
             page: activePage,
             sizePage: 10,
             direction: 'DESC',
             orderBy: 'id',
-            name: searchForm?.name,
-            categoryId: searchForm?.categoryId
+            name: name,
+            categoryId: category?.id
         }
 
         setIsLoading(true);
@@ -31,17 +34,39 @@ const Catalog = () => {
             .finally(() => {
                 setIsLoading(false);
             });
-    }, [activePage])
+    }, [activePage, name, category])
 
     useEffect(() => {
-       getProducts();
+        getProducts();
     }, [getProducts])
+
+    const handleChangeName = (name: string) => {
+        setActivePage(0);
+        setName(name);
+    }
+
+    const handleChangeCategory = (category: Category) => {
+        setActivePage(0);
+        setCategory(category);
+    }
+
+    const cleanFilterSearch = () => {
+        setActivePage(0);
+        setName('');
+        setCategory(undefined);
+    }
 
     return (
         <div className="container-base">
             <div className="d-flex justify-content-between barra-superior">
                 <h4 className="title">Catálogo de produtos</h4>
-                <Search onSearch={searchForm => getProducts(searchForm) }/>
+                <Search
+                    name={name}
+                    category={category}
+                    handleChangeName={handleChangeName}
+                    handleChangeCategory={handleChangeCategory}
+                    cleanFilterSearch={cleanFilterSearch}
+                />
             </div>
             <div className="container-catalog">
                 {isLoading ? <ProductLoader /> : (
