@@ -1,6 +1,8 @@
 import history from "core/utils/history";
-import { makePrivateRequest } from "core/utils/Request";
+import { makePrivateRequest, makeRequest } from "core/utils/Request";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { useParams } from "react-router";
 import { toast } from "react-toastify";
 import FormBase from "../../Product/FormBase";
 
@@ -8,13 +10,26 @@ type FormState = {
     name: string;
 }
 
+type ParamsType = {
+    categoryId: string;
+}
+
 const FormCategory = () => {
-    const { handleSubmit, register, errors } = useForm<FormState>();
+    const { handleSubmit, register, errors, setValue } = useForm<FormState>();
+    const { categoryId } = useParams<ParamsType>();
+    const isEditing = categoryId !== 'create';
+
+    useEffect(() => {
+        if (isEditing) {
+            makeRequest({ url: `/categories/${categoryId}` })
+                .then(response => setValue('name', response.data.name));
+        }
+    }, [isEditing, categoryId, setValue])
 
     const onSubmit = (data: FormState) => {
         makePrivateRequest({
-            method: "POST",
-            url: "/categories",
+            method: isEditing ? "PUT" : "POST",
+            url: isEditing ? `/categories/${categoryId}` : "/categories",
             data
         })?.then(() => {
             toast.success("Categoria salva com Sucesso!");
@@ -25,12 +40,14 @@ const FormCategory = () => {
 
     const handleCancel = () => {
         history.replace("/admin/categories");
-    }   
+    }
 
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
-            <FormBase title="CADASTRAR CATEGORIA" nameButtonCad="CADASTRAR" handleCancel={handleCancel}>
+            <FormBase title={isEditing ? "EDITAR CATEGORIA" : "CADASTRAR CATEGORIA"}
+                nameButtonCad={isEditing ? "SALVAR" : "CADASTRAR"}
+                handleCancel={handleCancel}>
                 <div className="">
                     <input type="text"
                         name="name"
