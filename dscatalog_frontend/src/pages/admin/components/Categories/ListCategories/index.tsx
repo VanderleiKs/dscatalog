@@ -1,3 +1,4 @@
+import SearchCategories from "core/components/SearchCategories";
 import history from "core/utils/history";
 import { makePrivateRequest } from "core/utils/Request";
 import { useCallback, useEffect, useState } from "react";
@@ -43,8 +44,9 @@ const ListCategories = () => {
 
     return (
         <div>
-            <div className="d-flex">
-                <button className="btn btn-primary" onClick={handleCreate}>ADICIONAR</button>
+            <div className="d-flex justify-content-between">
+                <button className="btn btn-primary btn-lg button-add" onClick={handleCreate}>ADICIONAR</button>
+               <SearchCategories />
             </div>
             <div className="admin-container-cards">
                 {cat?.content.map(category => (

@@ -27,8 +27,8 @@ public class CategoryService {
 
     //Find all categories
     @Transactional(readOnly = true)
-    public ResponseEntity<Page<CategoryDTO>> findAllCategory(PageRequest pageRequest){
-        Page<Category> categories = categoryRepository.findAll(pageRequest);
+    public ResponseEntity<Page<CategoryDTO>> findAllCategory(String name, PageRequest pageRequest){
+        Page<Category> categories = categoryRepository.findCategories(name, pageRequest);
         return ResponseEntity.ok(categories.map(CategoryDTO::new));
     }
 

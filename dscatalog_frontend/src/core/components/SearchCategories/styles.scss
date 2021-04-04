@@ -1,0 +1,22 @@
+.container-search-categories{
+    width: 70%;
+    display: flex;
+    border-radius: 10px;
+    padding: 5px 10px;
+}
+
+.search-categories-input{
+    flex: 1;
+    display: flex;
+    border-bottom: 1px solid #E1E1E1;
+    margin-right: 30px;
+    align-items: center;
+
+    input{
+        border: none;
+
+        &:focus{
+            box-shadow: none;
+        }
+    }
+}

@@ -1,5 +1,5 @@
 import Pagination from 'core/components/Pagination';
-import SearchProducts from 'core/components/Search';
+import SearchProducts from 'core/components/SearchProducts';
 import { ProductResponse } from 'core/types/Product';
 import { makePrivateRequest, makeRequest } from 'core/utils/Request';
 import { useCallback, useEffect, useState } from 'react';

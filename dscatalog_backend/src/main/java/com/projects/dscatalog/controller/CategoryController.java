@@ -32,10 +32,11 @@ public class CategoryController {
             @RequestParam(value = "page", defaultValue = "0") Integer page, //Pag
             @RequestParam(value = "sizePerPage", defaultValue = "5") Integer sizePerPage, //item per pag
             @RequestParam(value = "sort", defaultValue = "ASC") String sort, //Form in ordem
-            @RequestParam(value = "orderBy", defaultValue = "name") String orderBy //Per what column ordem
+            @RequestParam(value = "orderBy", defaultValue = "name") String orderBy, //Per what column ordem
+            @RequestParam(value = "name", defaultValue = "") String name
     ){
         PageRequest pageRequest = PageRequest.of(page, sizePerPage, Sort.Direction.valueOf(sort), orderBy);
-        return categoryService.findAllCategory(pageRequest);
+        return categoryService.findAllCategory(name, pageRequest);
     }
 
     @GetMapping("/{id}")
