@@ -65,14 +65,19 @@ const Form = () => {
                 toast.success("Produto salvo com sucesso!");
                 history.goBack();
             })
-            .catch(() => toast.error("Erro ao salvar o produto!"));
+            .catch(() => toast.error("Erro ao salvar produto!"));
     }
+
+    const handleCancel = () => {
+        history.replace("/admin/products");
+    }   
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             <FormBase
                 title={isEditing ? "EDITAR PRODUTO" : "CADASTRAR PRODUTO"}
                 nameButtonCad={isEditing ? "SALVAR" : "CADASTRAR"}
+                handleCancel={handleCancel}
             >
                 <div className="row">
                     <div className="col-6">

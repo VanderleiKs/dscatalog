@@ -5,7 +5,7 @@ import { makePrivateRequest, makeRequest } from 'core/utils/Request';
 import { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { Category } from '../../Categories';
+import { Category } from '../../Categories/ListCategories';
 import CardLoader from '../Loaders/CardLoader';
 import Card from './Card';
 import './styles.scss';

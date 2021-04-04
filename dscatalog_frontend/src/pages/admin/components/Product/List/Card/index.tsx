@@ -31,7 +31,7 @@ const Card = ({ product, onRemove }: Props) => {
                     </Button>
                 </Modal.Footer>
             </Modal>
-
+    
             <div className="card-base container-card">
                 <div className="card-image col-2">
                     <img className="image-product" src={product.imgUrl} alt={product.name} />

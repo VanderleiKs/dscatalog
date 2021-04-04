@@ -1,3 +1,18 @@
 .card-categories{
     padding: 10px 0 10px 20px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.admin-card-category-title{
+    font-size: 18px;
+    line-height: 25px;
+    letter-spacing: -0.015em;
+    color: #263238;
+}
+
+.admin-button-card-category{
+    justify-content: space-between;
+    border-radius: 10px;
 }

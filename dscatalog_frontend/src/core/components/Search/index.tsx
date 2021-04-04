@@ -1,6 +1,6 @@
 import { ReactComponent as SearchIcon } from 'core/assets/images/search_icon.svg';
 import { makeRequest } from 'core/utils/Request';
-import { Category } from 'pages/admin/components/Categories';
+import { Category } from 'pages/admin/components/Categories/ListCategories';
 import { useEffect, useState } from 'react';
 import Select from 'react-select';
 import './styles.scss';

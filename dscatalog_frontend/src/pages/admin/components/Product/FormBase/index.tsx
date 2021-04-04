@@ -1,21 +1,14 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
 import './styles.scss';
 
 type Props = {
     title: string;
     children: React.ReactNode;
     nameButtonCad: string;
+    handleCancel: () => void;
 }
 
-const FormBase = ({title, children, nameButtonCad}: Props) => {
-    const history = useHistory();
-
-    const handleCancel = () => {
-        history.replace("/admin/products");
-    }   
-    return(
-
+const FormBase = ({title, children, nameButtonCad, handleCancel}: Props) => (
     <div className="card-base container-formbase">
         <h3 className="formbase-title">{title}</h3>
         {children}
@@ -26,5 +19,4 @@ const FormBase = ({title, children, nameButtonCad}: Props) => {
     </div>
 
 );
-}
 export default FormBase;

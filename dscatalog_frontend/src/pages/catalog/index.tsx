@@ -7,7 +7,7 @@ import ProductCard from './components/productCard';
 import './styles.scss';
 import Pagination from 'core/components/Pagination';
 import Search from 'core/components/Search';
-import { Category } from 'pages/admin/components/Categories';
+import { Category } from 'pages/admin/components/Categories/ListCategories';
 
 const Catalog = () => {
 

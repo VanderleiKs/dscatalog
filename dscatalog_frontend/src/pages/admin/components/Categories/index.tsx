@@ -1,32 +1,18 @@
-import { makePrivateRequest } from "core/utils/Request";
-import { useEffect, useState } from "react";
-import CardCategories from "./Card";
+import { Route, Switch } from "react-router";
+import FormCategory from "./FormCategory";
+import ListCategories from "./ListCategories";
 
-export type catResponse = {
-    content: Category[];
-}
-
-export type Category = {
-    id: number;
-    name: string;
-}
-
-const Categories = () => {
-    const [cat, setCat] = useState<catResponse>();
-
-    useEffect(() => {
-        makePrivateRequest({url:"/categories"})
-        ?.then(response => setCat(response.data));
-    }, []);
-
-    return(
-        <div className="container-cards mt-5 d-grid">
-            {cat?.content.map(category => (
-                <CardCategories key={category.id} name={category.name} />
-            ))}
-        </div>
-       
-    );
-}
+const Categories = () => (
+    <>
+        <Switch>
+            <Route path="/admin/categories" exact>
+                <ListCategories />
+            </Route>
+            <Route path="/admin/categories/:categoryId">
+                <FormCategory />
+            </Route>
+        </Switch>
+    </>
+);
 
 export default Categories;
