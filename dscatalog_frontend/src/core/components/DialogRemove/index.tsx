@@ -2,12 +2,11 @@ import { useState } from 'react';
 import { Button, Modal } from 'react-bootstrap';
 
 type Props = {
-    onRemove: () => {id: number};
-    id: number;
+    confirmRemove: (id: number) => void;
     setCard: Boolean;
 }
 
-const DialogRemove = ({ onRemove, id, setCard }: Props) => {
+const DialogRemove = ({ confirmRemove, setCard }: Props) => {
     const [isRemoving, setIsRemoving] = useState(false);
     const handleClose = () => setIsRemoving(false);
 
@@ -25,7 +24,7 @@ const DialogRemove = ({ onRemove, id, setCard }: Props) => {
                     <Button variant="secondary" onClick={handleClose}>
                         Cancelar
                     </Button>
-                    <Button variant="danger" onClick={() => onRemove}>
+                    <Button variant="danger" onClick={() => confirmRemove}>
                         Confimar
                     </Button>
                 </Modal.Footer>
