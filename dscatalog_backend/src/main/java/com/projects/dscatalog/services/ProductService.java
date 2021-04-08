@@ -1,9 +1,15 @@
 package com.projects.dscatalog.services;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.URI;
 import java.time.Instant;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletResponse;
 
 import com.projects.dscatalog.dto.requests.ProductDTO;
 import com.projects.dscatalog.dto.responses.ResponseMessage;
@@ -18,13 +24,36 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 @Service
 public class ProductService {
 
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
+
+
+    public File report(HttpServletResponse response) throws JRException, IOException{
+        List<Product> products = productRepository.findAll();
+        File file = ResourceUtils.getFile("Report.jrxml");
+        JasperReport report = JasperCompileManager.compileReport(file.getAbsolutePath());
+        JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(products);
+        Map<String, Object> map = new HashMap<>();
+        map.put("bala", "Ana Paula");
+        JasperPrint jasperPrint = JasperFillManager.fillReport(report, map, dataSource);
+        JasperExportManager.exportReportToPdfFile(jasperPrint, "c:\\relatorios\\relat.pdf");
+        return new File("c:\\relatorios\\relat.pdf");
+    }
+
 
     public ProductService(ProductRepository productRepository, CategoryRepository categoryRepository) {
         this.productRepository = productRepository;

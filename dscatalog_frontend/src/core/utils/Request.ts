@@ -16,7 +16,7 @@ type LoginData = {
     password: string;
 }
 
-const baseUrl = 'http://localhost:8080';
+export const baseUrl = 'http://localhost:8080';
 
 Axios.interceptors.response.use(function (response) {
     return response;
