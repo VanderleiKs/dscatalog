@@ -2,6 +2,8 @@ package com.projects.dscatalog.services;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.Serializable;
 import java.net.URI;
 import java.time.Instant;
 import java.util.Arrays;
@@ -36,22 +38,25 @@ import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 @Service
-public class ProductService {
-
+public class ProductService implements Serializable{
+    private static final long serialVersionUID = 1L;
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
 
 
-    public File report(HttpServletResponse response) throws JRException, IOException{
+    public void report(HttpServletResponse response) throws JRException, IOException{
         List<Product> products = productRepository.findAll();
         File file = ResourceUtils.getFile("Report.jrxml");
         JasperReport report = JasperCompileManager.compileReport(file.getAbsolutePath());
         JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(products);
         Map<String, Object> map = new HashMap<>();
         map.put("bala", "Ana Paula");
+        response.setHeader("Content-Disposition", "inline; filename=relatorio.pdf");
+        response.setContentType("application/pdf");
         JasperPrint jasperPrint = JasperFillManager.fillReport(report, map, dataSource);
-        JasperExportManager.exportReportToPdfFile(jasperPrint, "c:\\relatorios\\relat.pdf");
-        return new File("c:\\relatorios\\relat.pdf");
+        final OutputStream outStream = response.getOutputStream();
+        //JasperExportManager.exportReportToPdfFile(jasperPrint, "c:\\relatorios\\relat.pdf");
+        JasperExportManager.exportReportToPdfStream(jasperPrint, outStream);
     }
 
 

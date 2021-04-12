@@ -9,6 +9,7 @@ type RequestParams = {
     data?: object | string;
     params?: object;
     headers?: object;
+    relatory?: boolean;
 }
 
 type LoginData = {
@@ -21,29 +22,41 @@ export const baseUrl = 'http://localhost:8080';
 Axios.interceptors.response.use(function (response) {
     return response;
 }, function (error) {
-    if (error.response.status === 401) {
+    if (error.response?.status === 401) {
         logout();
     }
     return Promise.reject(error);
 });
 
-export const makeRequest = ({ method = 'GET', url, data, params, headers }: RequestParams) => {
-    return Axios({
-        method,
-        url: `${baseUrl}${url}`,
-        data,
-        params,
-        headers
-    });
+export const makeRequest = ({ method = 'GET', url, data, params, headers, relatory }: RequestParams) => {
+    if (relatory) {
+        return Axios({
+            method,
+            url: `${baseUrl}${url}`,
+            responseType:'arraybuffer',
+            data,
+            params,
+            headers
+        });
+    }
+    else {
+        return Axios({
+            method,
+            url: `${baseUrl}${url}`,
+            data,
+            params,
+            headers,
+        });
+    }
 }
 
-export const makePrivateRequest = ({ method = 'GET', url, data, params }: RequestParams) => {
+export const makePrivateRequest = ({ method = 'GET', url, data, params, relatory }: RequestParams) => {
     if (isAuthenticated()) {
         const sessionData = getSessionData();
         const headers = {
             'Authorization': `Bearer ${sessionData?.access_token}`
         }
-        return makeRequest({ method, url, data, params, headers });
+        return makeRequest({ method, url, data, params, headers, relatory });
     }
     history.push("/auth/login");
 }
